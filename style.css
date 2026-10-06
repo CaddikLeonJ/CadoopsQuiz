@@ -32,3 +32,56 @@
 .crop-stage{border-radius:0!important}
 
 .buzzer-event{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;margin:18px 0;padding:22px;border:2px solid var(--gold);border-radius:18px;background:#ffc66312}.buzzer-event .avatar{width:110px;height:110px;font-size:58px;border:4px solid var(--gold)}.buzzer-event strong{font-family:'Space Grotesk',system-ui,sans-serif;font-size:clamp(28px,7vw,48px);line-height:1}.buzzer-event span{font-weight:900;letter-spacing:.08em;color:var(--gold)}.steal-choice{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+
+body.quiz-active{overflow:hidden;overscroll-behavior:none;height:100dvh}
+body.quiz-active header{display:none}
+body.quiz-active main{height:100dvh;max-width:none;padding:8px 10px;overflow:hidden}
+body.quiz-active #app{height:100%;overflow:hidden}
+body.quiz-active .room-banner{display:none}
+body.quiz-active .lex-inline{margin:0 0 5px;padding:5px 9px;min-height:0;gap:8px;border-radius:9px}
+body.quiz-active .lex-inline .lex-face{width:28px;height:28px}
+body.quiz-active .lex-inline small{font-size:7px;margin-bottom:1px;letter-spacing:1px}
+body.quiz-active .lex-inline p{font-size:10px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.quiz-active .game-layout{display:block;height:calc(100% - 38px)}
+body.quiz-active .game-layout>div{height:100%}
+body.quiz-active .question-card{height:100%;box-sizing:border-box;padding:8px 10px;display:flex;flex-direction:column;overflow:hidden}
+body.quiz-active .game-sidebar{display:none}
+body.quiz-active .question-meta{font-size:9px;flex:0 0 auto}
+body.quiz-active .time{font-size:17px}
+body.quiz-active .timer-bar{height:4px;margin-top:4px;flex:0 0 auto}
+body.quiz-active .question-card>.eyebrow{margin-top:5px!important;font-size:8px;line-height:1}
+body.quiz-active .question-title{font-size:clamp(16px,4.5vw,24px);line-height:1.1;margin:5px 0 7px;text-align:center;flex:0 0 auto}
+body.quiz-active .question-image{max-height:18dvh;width:auto;margin:2px auto 5px}
+body.quiz-active .muted{font-size:9px;line-height:1.15;margin:3px 0}
+body.quiz-active .alphabet-pad{gap:3px;margin:4px 0;grid-template-columns:repeat(13,1fr)}
+body.quiz-active .alphabet-pad button{min-height:31px;padding:2px;font-size:12px}
+body.quiz-active .answer-grid{gap:5px;margin:4px 0}
+body.quiz-active .answer-option{min-height:38px;padding:6px;font-size:11px}
+body.quiz-active .bingo-grid{gap:4px;margin:4px 0}
+body.quiz-active .bingo-grid button{min-height:40px;padding:4px;font-size:10px}
+body.quiz-active .number-entry{margin:4px 0}
+body.quiz-active .number-entry input{padding:6px;min-height:34px}
+body.quiz-active .number-pad{gap:3px;margin-top:3px}
+body.quiz-active .number-pad button{min-height:28px;padding:2px}
+body.quiz-active .buzz-button{padding:12px;font-size:24px;margin:5px 0}
+body.quiz-active .locked,.quiz-active .notice{padding:6px;margin:4px 0;font-size:10px}
+body.quiz-active .host-controls{margin-top:auto;padding-top:4px;gap:3px;flex:0 0 auto}
+body.quiz-active .host-controls button{padding:5px 7px;min-height:27px;font-size:9px}
+body.quiz-active .host-controls label{font-size:9px}
+body.quiz-active .progress-note{font-size:8px;margin:3px 0 0;flex:0 0 auto}
+body.quiz-active .reveal-box{padding:7px;margin:5px 0;font-size:11px}
+body.quiz-active .reveal-box h3{margin:0 0 3px;font-size:11px}
+body.quiz-active .fastest-event,body.quiz-active .buzzer-event{position:absolute;inset:42px 10px 45px;z-index:20;margin:0;padding:10px;overflow:hidden}
+.quiz-countdown{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:var(--bg);gap:5px}
+.quiz-countdown .lex-face{width:72px;height:72px}
+.quiz-countdown span{color:var(--gold);font-weight:900;letter-spacing:2px;font-size:11px}
+.quiz-countdown strong{font-family:'Space Grotesk',system-ui,sans-serif;font-size:min(38dvh,180px);line-height:.9;color:var(--gold)}
+.quiz-countdown p{font-size:16px;margin:3px}
+@media(max-height:700px){
+ body.quiz-active main{padding:4px 7px}
+ body.quiz-active .lex-inline{display:none}
+ body.quiz-active .game-layout{height:100%}
+ body.quiz-active .question-title{font-size:15px;margin:3px 0}
+ body.quiz-active .alphabet-pad button{min-height:27px;font-size:10px}
+ body.quiz-active .host-controls{padding-top:2px}
+}
