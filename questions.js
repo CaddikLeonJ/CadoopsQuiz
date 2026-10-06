@@ -60,22 +60,22 @@ const factPools={
 function expandFactPool(category,pairs,target=1000){
  const rows=raw[category],seen=new Set(rows.map(r=>r[0].toLowerCase())),n=pairs.length;
  const templates={
- 'General Knowledge':[(a,b)=>[\`What is the capital of \${a}?\`,b],(a,b)=>[\`\${b} is the capital of which country?\`,a]],
- 'Lord of the Rings':[(a,b)=>[\`In The Lord of the Rings, which description best matches \${a}?\`,b]],
- 'Game of Thrones':[(a,b)=>[\`In Game of Thrones, which place or companion is most closely associated with \${a}?\`,b]],
- 'Disney':[(a,b)=>[\`What kind of animal is Disney character \${a}?\`,b]],
- 'Video Games':[(a,b)=>[\`Which video-game series is \${a} associated with?\`,b]],
- 'Science':[(a,b)=>[\`What is the chemical symbol for \${a}?\`,b],(a,b)=>[\`Which element has the chemical symbol \${b}?\`,a]],
- 'Harry Potter':[(a,b)=>[\`Which Hogwarts house is \${a} associated with?\`,b]],
- 'Manchester United':[(a,b)=>[\`Which country did former Manchester United player \${a} represent internationally?\`,b]],
- 'Marvel':[(a,b)=>[\`Which Marvel identity belongs to \${a}?\`,b],(a,b)=>[\`What is the civilian name of Marvel's \${b}?\`,a]],
- 'DC':[(a,b)=>[\`Which DC identity belongs to \${a}?\`,b],(a,b)=>[\`What is the civilian name of DC's \${b}?\`,a]],
- 'Pokémon':[(a,b)=>[\`What type combination does \${a} have in the modern main-series games?\`,b]],
- 'Marine Biology':[(a,b)=>[\`Which broad animal group best describes a \${a}?\`,b]],
- 'Cats':[(a,b)=>[\`Which trait is especially associated with the \${a} cat breed?\`,b]],
- 'Animals':[(a,b)=>[\`Which group or family best describes the \${a}?\`,b]],
- 'Films':[(a,b)=>[\`Who directed \${a}?\`,b]],
- 'TV Shows':[(a,b)=>[\`Which central character is associated with \${a}?\`,b]]
+ 'General Knowledge':[(a,b)=>[`What is the capital of ${a}?`,b],(a,b)=>[`${b} is the capital of which country?`,a]],
+ 'Lord of the Rings':[(a,b)=>[`In The Lord of the Rings, which description best matches ${a}?`,b]],
+ 'Game of Thrones':[(a,b)=>[`In Game of Thrones, which place or companion is most closely associated with ${a}?`,b]],
+ 'Disney':[(a,b)=>[`What kind of animal is Disney character ${a}?`,b]],
+ 'Video Games':[(a,b)=>[`Which video-game series is ${a} associated with?`,b]],
+ 'Science':[(a,b)=>[`What is the chemical symbol for ${a}?`,b],(a,b)=>[`Which element has the chemical symbol ${b}?`,a]],
+ 'Harry Potter':[(a,b)=>[`Which Hogwarts house is ${a} associated with?`,b]],
+ 'Manchester United':[(a,b)=>[`Which country did former Manchester United player ${a} represent internationally?`,b]],
+ 'Marvel':[(a,b)=>[`Which Marvel identity belongs to ${a}?`,b],(a,b)=>[`What is the civilian name of Marvel's ${b}?`,a]],
+ 'DC':[(a,b)=>[`Which DC identity belongs to ${a}?`,b],(a,b)=>[`What is the civilian name of DC's ${b}?`,a]],
+ 'Pokémon':[(a,b)=>[`What type combination does ${a} have in the modern main-series games?`,b]],
+ 'Marine Biology':[(a,b)=>[`Which broad animal group best describes a ${a}?`,b]],
+ 'Cats':[(a,b)=>[`Which trait is especially associated with the ${a} cat breed?`,b]],
+ 'Animals':[(a,b)=>[`Which group or family best describes the ${a}?`,b]],
+ 'Films':[(a,b)=>[`Who directed ${a}?`,b]],
+ 'TV Shows':[(a,b)=>[`Which central character is associated with ${a}?`,b]]
  }[category]||[];
  if(!templates.length)return;
  // Build factual base questions first.
@@ -90,9 +90,9 @@ function expandFactPool(category,pairs,target=1000){
  while(rows.length<target){
    let i=seed%n,j=(seed*7+3)%n,k=(seed*11+5)%n,l=(seed*13+7)%n,mode=seed%3;
    let A=pairs[i],B=pairs[j],C=pairs[k],D=pairs[l],q,ans,opts;
-   if(mode===0){q=\`Which of these is correctly paired in \${category}?\`;ans=\`\${A[0]} — \${A[1]}\`;opts=[ans,\`\${B[0]} — \${C[1]}\`,\`\${C[0]} — \${D[1]}\`,\`\${D[0]} — \${B[1]}\`]}
-   else if(mode===1){q=\`Which \${category} entry is associated with “\${A[1]}”?\`;ans=A[0];opts=[ans,B[0],C[0],D[0]]}
-   else{q=\`Which association for \${A[0]} is correct?\`;ans=A[1];opts=[ans,B[1],C[1],D[1]]}
+   if(mode===0){q=`Which of these is correctly paired in ${category}?`;ans=`${A[0]} — ${A[1]}`;opts=[ans,`${B[0]} — ${C[1]}`,`${C[0]} — ${D[1]}`,`${D[0]} — ${B[1]}`]}
+   else if(mode===1){q=`Which ${category} entry is associated with “${A[1]}”?`;ans=A[0];opts=[ans,B[0],C[0],D[0]]}
+   else{q=`Which association for ${A[0]} is correct?`;ans=A[1];opts=[ans,B[1],C[1],D[1]]}
    let key=q.toLowerCase()+'|'+opts.join('|').toLowerCase();
    if(!seen.has(key)&&new Set(opts).size===4){rows.push([q,...opts]);seen.add(key)}
    seed++;if(seed>200000)break;
