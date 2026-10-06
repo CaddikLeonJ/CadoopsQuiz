@@ -274,3 +274,12 @@ body.quiz-active .play-area .alphabet-pad button{
    width:min(calc((100vw - 42px - 9px)/4),calc((100dvh - 300px - 18px)/7))!important;
  }
 }
+
+/* Steal choices use stable tap targets instead of native dropdowns. */
+.target-picker{width:100%;margin:6px 0}
+.target-picker>p{margin:0 0 6px;font-weight:800}
+.target-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:30dvh;overflow-y:auto;overscroll-behavior:contain;padding:2px}
+.target-buttons button{min-height:44px;padding:8px 10px;border-radius:10px;font-size:13px;white-space:normal}
+body.quiz-active .power{margin-top:6px}
+body.quiz-active .power p{margin:3px 0;font-size:10px}
+body.quiz-active .power .target-buttons{max-height:20dvh}
