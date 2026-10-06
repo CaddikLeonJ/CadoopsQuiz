@@ -84,7 +84,7 @@ if(a.correct){p.correct++;if(q.mode==='bingo'){let cell=p.grid.indexOf(q.answer)
 // Apply each steal against pre-question balances, so scoring is independent of join order.
 let remaining=new Map(this.players.map(p=>[p.id,p.score]));stealActions.forEach(s=>{let victim=this.players.find(p=>p.id===s.target);if(!victim||victim.activePower?.kind==='shield')return;let amount=Math.min(s.amount,remaining.get(victim.id));remaining.set(victim.id,remaining.get(victim.id)-amount);changes.set(victim.id,changes.get(victim.id)-amount);changes.set(s.p.id,changes.get(s.p.id)+amount);s.p.steals+=amount});
 this.players.forEach(p=>{p.answer.delta=changes.get(p.id);p.score=Math.max(0,p.score+p.answer.delta)});
-this.phase='reveal';this.deadline=now+19000;this.buzz=null;let n=this.players.filter(p=>p.answer.correct).length;this.message=q.mode==='closest'?`The answer is ${q.value}. Closest gets 50 points — spot on gets 100!`:`The answer is ${q.answer}. ${n} ${n===1?'player got':'players got'} it right${q.mode==='evil'?' — check those scores, buddy!':'.'}`;this.change(now)
+this.phase='reveal';this.deadline=now+7000;this.buzz=null;let n=this.players.filter(p=>p.answer.correct).length;this.message=q.mode==='closest'?`The answer is ${q.value}. Closest gets 50 points — spot on gets 100!`:`The answer is ${q.answer}. ${n} ${n===1?'player got':'players got'} it right${q.mode==='evil'?' — check those scores, buddy!':'.'}`;this.change(now)
 }
 host(token,data,now=Date.now()){
 assert(token===this.hostToken,'Host controls are private.');this.tick(now);
