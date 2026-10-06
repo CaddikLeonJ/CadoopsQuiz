@@ -14,16 +14,56 @@ const face=(large=false)=>`<svg class="lex-face ${large?'large':''}" viewBox="0 
 function avatar(p,big=false){return `<span class="avatar ${p.photo?'team-photo':'avatar-icon'} ${big?'big':''}">${p.photo?`<img src="${esc(p.photo)}" alt="${esc(p.name||'Player')} profile photo">`:avatars[p.avatar||0]}</span>`}
 function toast(s){$('#toast').textContent=s;$('#toast').style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>$('#toast').style.display='none',4500)}
 function speak(text){if(!prefs.voice||!('speechSynthesis'in window))return;window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(String(text).replace(/[^\p{L}\p{N}\p{P}\p{Z}]/gu,''));let voices=speechSynthesis.getVoices(),chosen=voices.find(v=>v.name===prefs.voiceName);if(!chosen){let maleNames=/^(Aaron|Albert|Alex|Arthur|Daniel|Fred|Junior|Lee|Oliver|Ralph|Reed|Rocko|Rishi|Sandy|Shelley|Thomas|Tom|Trinoids|Xander)$/i;chosen=voices.find(v=>/^en-(US|GB)/i.test(v.lang)&&maleNames.test(v.name))||voices.find(v=>/^en-(US|GB)/i.test(v.lang)&&/male/i.test(v.name))}u.voice=chosen||null;u.lang=chosen?.lang||'en-US';u.rate=.94;u.pitch=.82;u.volume=prefs.muted?0:prefs.volume;speechSynthesis.speak(u)}
-let themeAudio=null,audioUnlocked=false,introSfxNodes=[],introPreviewTimer=null;
+let themeAudio=null,audioUnlocked=false,introSfxNodes=[],introRecordedAudio=[],introPreviewTimer=null;
 
 const introSfxProfiles=[
 'explosion','lightning','fireworks','fire','ice','electric','confetti','sparks','neon','smoke','stars','meteor','rainbow','shockwave','laser','portal','thunder','embers','snow','pixel','glitch','hearts','diamonds','greenenergy','purpleenergy','alert','nova','gold','silver','plasma','comet','dragonfire','runes','ghost','shadow','sun','moon','tornado','water','bubbles','petals','leaves','disco','spotlight','camera','crown','victory','firering','vortex','supernova'
 ];
-function stopIntroSfx(){introSfxNodes.splice(0).forEach(n=>{try{n.stop?.()}catch{}try{n.disconnect?.()}catch{}})}
+function stopIntroSfx(){introSfxNodes.splice(0).forEach(n=>{try{n.stop?.()}catch{}try{n.disconnect?.()}catch{}});introRecordedAudio.splice(0).forEach(x=>{try{x.pause();x.currentTime=0}catch{}})}
+const recordedIntroSfx={
+ impact:'https://assets.mixkit.co/active_storage/sfx/2908/2908-preview.mp3',
+ deepImpact:'https://assets.mixkit.co/active_storage/sfx/1143/1143-preview.mp3',
+ bass:'https://assets.mixkit.co/active_storage/sfx/2303/2303-preview.mp3',
+ wind:'https://assets.mixkit.co/active_storage/sfx/3220/3220-preview.mp3',
+ swirl:'https://assets.mixkit.co/active_storage/sfx/1493/1493-preview.mp3',
+ gust:'https://assets.mixkit.co/active_storage/sfx/2705/2705-preview.mp3',
+ water:'https://assets.mixkit.co/active_storage/sfx/1311/1311-preview.mp3',
+ bubble:'https://assets.mixkit.co/active_storage/sfx/1317/1317-preview.mp3',
+ waterDrop:'https://assets.mixkit.co/active_storage/sfx/3179/3179-preview.mp3',
+ glass:'https://assets.mixkit.co/active_storage/sfx/759/759-preview.mp3',
+ debris:'https://assets.mixkit.co/active_storage/sfx/172/172-preview.mp3',
+ sparkle:'https://assets.mixkit.co/active_storage/sfx/2633/2633-preview.mp3',
+ crystal:'https://assets.mixkit.co/active_storage/sfx/3108/3108-preview.mp3',
+ electric:'https://assets.mixkit.co/active_storage/sfx/2592/2592-preview.mp3',
+ electricPop:'https://assets.mixkit.co/active_storage/sfx/2365/2365-preview.mp3',
+ glitch:'https://assets.mixkit.co/active_storage/sfx/1457/1457-preview.mp3',
+ glitchQuick:'https://assets.mixkit.co/active_storage/sfx/2946/2946-preview.mp3',
+ power:'https://assets.mixkit.co/active_storage/sfx/2602/2602-preview.mp3',
+ warp:'https://assets.mixkit.co/active_storage/sfx/3113/3113-preview.mp3',
+ space:'https://assets.mixkit.co/active_storage/sfx/2523/2523-preview.mp3',
+ hum:'https://assets.mixkit.co/active_storage/sfx/2133/2133-preview.mp3',
+ camera:'https://assets.mixkit.co/active_storage/sfx/1430/1430-preview.mp3',
+ cameraVintage:'https://assets.mixkit.co/active_storage/sfx/1438/1438-preview.mp3',
+ paperWind:'https://assets.mixkit.co/active_storage/sfx/2652/2652-preview.mp3',
+ wing:'https://assets.mixkit.co/active_storage/sfx/2697/2697-preview.mp3',
+ sand:'https://assets.mixkit.co/active_storage/sfx/1494/1494-preview.mp3',
+ whoosh:'https://assets.mixkit.co/active_storage/sfx/1490/1490-preview.mp3',
+ metal:'https://assets.mixkit.co/active_storage/sfx/2639/2639-preview.mp3'
+};
+const introRecordedLayers={
+ 1:[['impact',.22,0],['debris',.10,.12]],2:[['electric',.16,0],['deepImpact',.08,.18]],3:[['impact',.10,.2],['sparkle',.11,0]],4:[['wind',.13,0],['impact',.09,.18]],5:[['glass',.14,.12],['crystal',.11,0]],6:[['electric',.17,0],['electricPop',.10,.2]],7:[['paperWind',.12,0],['sparkle',.09,.12]],8:[['sparkle',.14,0],['electricPop',.07,.18]],9:[['power',.13,0],['hum',.07,0]],10:[['gust',.13,0],['sand',.09,.1]],
+ 11:[['sparkle',.14,0],['crystal',.08,.12]],12:[['whoosh',.13,0],['impact',.14,.3]],13:[['sparkle',.12,0],['crystal',.08,.12]],14:[['deepImpact',.16,.08],['wind',.07,0]],15:[['warp',.13,0],['electricPop',.08,.18]],16:[['space',.13,0],['warp',.08,.12]],17:[['deepImpact',.14,.18],['electric',.10,0]],18:[['sand',.10,0],['wind',.09,0]],19:[['wind',.11,0],['crystal',.07,.15]],20:[['glitchQuick',.14,0],['electricPop',.07,.12]],
+ 21:[['glitch',.14,0],['glitchQuick',.09,.16]],22:[['crystal',.10,0],['sparkle',.09,.1]],23:[['crystal',.14,0],['glass',.07,.22]],24:[['power',.13,0],['hum',.06,0]],25:[['space',.11,0],['power',.09,.12]],26:[['impact',.11,.12],['electricPop',.09,0]],27:[['space',.12,0],['deepImpact',.10,.25]],28:[['crystal',.11,0],['sparkle',.09,.12]],29:[['metal',.11,0],['sparkle',.07,.12]],30:[['power',.13,0],['warp',.08,.14]],
+ 31:[['whoosh',.14,0],['wind',.08,0]],32:[['wind',.14,0],['impact',.10,.2]],33:[['crystal',.10,0],['space',.09,.12]],34:[['gust',.10,0],['space',.07,0]],35:[['deepImpact',.11,.18],['gust',.09,0]],36:[['wind',.10,0],['sparkle',.08,.16]],37:[['crystal',.10,0],['hum',.06,0]],38:[['swirl',.16,0],['gust',.12,0]],39:[['water',.17,.1],['waterDrop',.08,.2]],40:[['bubble',.16,0],['waterDrop',.08,.15]],
+ 41:[['paperWind',.11,0],['wing',.08,.1]],42:[['paperWind',.14,0],['gust',.07,0]],43:[['bass',.10,0],['sparkle',.07,.15]],44:[['whoosh',.10,0],['crystal',.07,.15]],45:[['camera',.18,.08]],46:[['metal',.12,.12],['impact',.08,.2]],47:[['crystal',.12,0],['sparkle',.10,.12]],48:[['swirl',.13,0],['impact',.09,.2]],49:[['warp',.13,0],['swirl',.08,.1]],50:[['space',.12,0],['deepImpact',.15,.28],['sparkle',.06,.08]]
+};
+function playRecordedIntroLayers(fx,preview=false){
+ (introRecordedLayers[fx]||[]).forEach(([key,vol,delay])=>{let src=recordedIntroSfx[key];if(!src)return;setTimeout(()=>{if(!prefs.effects)return;try{let x=new Audio(src);x.preload='auto';x.volume=Math.min(preview?.16:.20,vol);introRecordedAudio.push(x);x.play().catch(()=>{})}catch{}},Math.round(delay*1000))})
+}
 function introSfxContext(){let C=window.AudioContext||window.webkitAudioContext;return C?(playIntroSfx.ctx||(playIntroSfx.ctx=new C())):null}
 function playIntroSfx(effect,preview=false){
  if(!prefs.effects)return;let fx=Math.max(1,Math.min(50,Number(String(effect).replace('fx',''))||1)),kind=introSfxProfiles[fx-1],c=introSfxContext();if(!c)return;
- c.resume?.();stopIntroSfx();let t=c.currentTime,master=preview?.105:.13;
+ c.resume?.();stopIntroSfx();playRecordedIntroLayers(fx,preview);let t=c.currentTime,master=preview?.055:.07;
  const gain=(v=1)=>{let g=c.createGain();g.gain.value=master*v;g.connect(c.destination);introSfxNodes.push(g);return g};
  const osc=(type,f1,f2,d=.5,delay=0,v=.45)=>{let o=c.createOscillator(),g=gain(v),st=t+delay;o.type=type;o.frequency.setValueAtTime(Math.max(20,f1),st);o.frequency.exponentialRampToValueAtTime(Math.max(20,f2),st+d);g.gain.setValueAtTime(master*v,st);g.gain.exponentialRampToValueAtTime(.0001,st+d);o.connect(g);o.start(st);o.stop(st+d);introSfxNodes.push(o)};
  const noise=(d=.6,delay=0,v=.55,filter='lowpass',freq=1000)=>{let n=Math.ceil(c.sampleRate*d),b=c.createBuffer(1,n,c.sampleRate),x=b.getChannelData(0);for(let i=0;i<n;i++)x[i]=(Math.random()*2-1)*(1-i/n);let s=c.createBufferSource(),f=c.createBiquadFilter(),g=gain(v),st=t+delay;s.buffer=b;f.type=filter;f.frequency.value=freq;s.connect(f);f.connect(g);g.gain.setValueAtTime(master*v,st);g.gain.exponentialRampToValueAtTime(.0001,st+d);s.start(st);s.stop(st+d);introSfxNodes.push(s,f)};
