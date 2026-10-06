@@ -403,3 +403,20 @@ body.quiz-active .power .target-buttons{max-height:20dvh}
 .fx-layer[data-effect="39"]{background:linear-gradient(to bottom,#062f5233,#008dc744 65%,#003d7077)}
 .fx-layer[data-effect="43"]{background:#08001477}
 .fx-layer[data-effect="50"]{background:radial-gradient(circle,#fff8b51c,#6c00ff16 38%,#000 85%)}
+
+/* v55 clean cinematic framing: only team identity + named effect */
+.intro-preview{min-height:220px;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;margin:12px 0 18px;overflow:visible}
+.intro-preview-content{position:relative;z-index:5;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:220px;width:100%;text-align:center}
+.intro-preview-content span,.intro-effect-name{display:none!important}
+.player-intro{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:hidden}
+.player-intro>span,.player-intro>p{display:none!important}
+.player-intro .avatar.big,.intro-preview .avatar.big{position:relative;z-index:6}
+.player-intro h1,.intro-preview-content strong{position:relative;z-index:6;margin:8px 0 0}
+.fx-layer{border:0!important;border-radius:0!important;box-shadow:none!important}
+/* remove generic ring/pulse overlays from every named scene */
+.fx-layer>b,.fx-layer>em{display:none!important}
+.fx-kind-lightning .arc-ring,.fx-kind-lightning .shock-ring,.fx-kind-lightning .fx-blast-core,
+.fx-kind-thunder .arc-ring,.fx-kind-thunder .shock-ring,
+.fx-kind-electric .shock-ring{display:none!important}
+/* effects are atmospheric backgrounds, never boxed cards */
+.scene,.intro-fx-canvas,.fx-svg,.fx-frost,.fx-ice-cracks,.fx-fire-core,.fx-water-wave,.fx-water-splash,.fx-blast-core{border-radius:0!important;outline:0!important}
