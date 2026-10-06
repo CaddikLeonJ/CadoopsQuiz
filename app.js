@@ -12,6 +12,26 @@ const face=(large=false)=>`<svg class="lex-face ${large?'large':''}" viewBox="0 
 function avatar(p,big=false){return `<span class="avatar ${big?'big':''}">${p.photo?`<img src="${esc(p.photo)}" alt="${esc(p.name||'Player')} profile photo">`:avatars[p.avatar||0]}</span>`}
 function toast(s){$('#toast').textContent=s;$('#toast').style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>$('#toast').style.display='none',4500)}
 function speak(text){if(!prefs.voice||!('speechSynthesis'in window))return;window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(String(text).replace(/[^\p{L}\p{N}\p{P}\p{Z}]/gu,''));let voices=speechSynthesis.getVoices(),chosen=voices.find(v=>v.name===prefs.voiceName);if(!chosen){let maleNames=/^(Aaron|Albert|Alex|Arthur|Daniel|Fred|Junior|Lee|Oliver|Ralph|Reed|Rocko|Rishi|Sandy|Shelley|Thomas|Tom|Trinoids|Xander)$/i;chosen=voices.find(v=>/^en-(US|GB)/i.test(v.lang)&&maleNames.test(v.name))||voices.find(v=>/^en-(US|GB)/i.test(v.lang)&&/male/i.test(v.name))}u.voice=chosen||null;u.lang=chosen?.lang||'en-US';u.rate=.94;u.pitch=.82;u.volume=prefs.muted?0:prefs.volume;speechSynthesis.speak(u)}
+let themeAudio=null,audioUnlocked=false;
+function unlockThemeAudio(){
+ if(audioUnlocked)return;
+ try{
+  themeAudio=themeAudio||new Audio();
+  themeAudio.volume=.85;
+  themeAudio.muted=true;
+  themeAudio.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
+  let p=themeAudio.play();
+  if(p&&p.then)p.then(()=>{themeAudio.pause();themeAudio.currentTime=0;themeAudio.muted=false;audioUnlocked=true}).catch(()=>{themeAudio.muted=false});
+ }catch{}
+}
+function playTheme(src){
+ if(!src)return;
+ try{
+  themeAudio=themeAudio||new Audio();
+  themeAudio.pause();themeAudio.src=src;themeAudio.currentTime=0;themeAudio.volume=.85;themeAudio.muted=false;
+  themeAudio.play().catch(()=>{});
+ }catch{}
+}
 function beep(correct=true){if(!prefs.effects)return;try{let a=beep.context||(beep.context=new(window.AudioContext||window.webkitAudioContext)());a.resume();let o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.setValueAtTime(correct?600:180,a.currentTime);o.frequency.exponentialRampToValueAtTime(correct?900:100,a.currentTime+.15);g.gain.setValueAtTime(.05,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.2);o.start();o.stop(a.currentTime+.2)}catch{}}
 function voiceOptions(){let voices=('speechSynthesis'in window)?speechSynthesis.getVoices().filter(v=>v.lang.startsWith('en')):[];$('#voiceSelect').innerHTML='<option value="">Automatic English voice</option>'+voices.map(v=>`<option value="${esc(v.name)}" ${v.name===prefs.voiceName?'selected':''}>${esc(v.name)} · ${esc(v.lang)}</option>`).join('')}
 if('speechSynthesis'in window)speechSynthesis.addEventListener('voiceschanged',voiceOptions);
@@ -51,7 +71,7 @@ function render(){let oldAudio=$('#songAudio');let audioState=oldAudio?{src:oldA
 document.body.classList.toggle('tv',!!session?.tv);$('#connection').textContent=local?'SOLO DEMO':state?'● LIVE ROOM':backend?'● SERVER CONNECTED':'LET’S PLAY';app.innerHTML=page==='setup'?setup():['join','tvjoin'].includes(page)?join():page==='room'&&state?(state.phase==='lobby'?lobby():state.phase==='finished'?finished():game()):home();
 Object.entries(values).forEach(([id,v])=>{let el=$('#'+id);if(el&&el.type!=='checkbox')el.value=v});if(focus&&$('#'+focus)){let el=$('#'+focus);el.focus({preventScroll:true});try{el.setSelectionRange(selection,selection)}catch{}}
 let audio=$('#songAudio');if(audio&&audioState&&audioState.src===audio.getAttribute('src')){audio.currentTime=audioState.time;if(audioState.playing&&!state.paused&&state.phase==='question')audio.play().catch(()=>{})}if(audio&&(state.paused||state.phase!=='question'))audio.pause();updateTimer();
-if(state&&page==='room'){let fc=state.firstCorrect,fcKey=fc?state.index+':'+fc.id:'';if(fcKey&&fcKey!==render.lastFastest){render.lastFastest=fcKey;if(fc.theme){try{let a=new Audio(fc.theme);a.volume=.85;a.play().catch(()=>{})}catch{}}}let key=state.phase+':'+state.index+':'+state.message;if(key!==lastSpoken){lastSpoken=key;speak(state.message+(state.phase==='question'?' '+state.q.prompt:''));if(state.phase==='reveal'&&state.me){let p=state.players.find(p=>p.id===state.me.id);beep(!!p?.answer?.correct)}}}
+if(state&&page==='room'){let fc=state.firstCorrect,fcKey=fc?state.index+':'+fc.id:'';if(fcKey&&fcKey!==render.lastFastest){render.lastFastest=fcKey;if(fc.theme)playTheme(fc.theme)}let key=state.phase+':'+state.index+':'+state.message;if(key!==lastSpoken){lastSpoken=key;speak(state.message+(state.phase==='question'?' '+state.q.prompt:''));if(state.phase==='reveal'&&state.me){let p=state.players.find(p=>p.id===state.me.id);beep(!!p?.answer?.correct)}}}
 }
 function updateTimer(){if(!state||!state.q)return;let now=state.paused?state.pauseAt:Date.now()+offset;let rem=Math.max(0,(state.deadline-now)/1000);if($('#timer'))$('#timer').textContent=state.paused?'Ⅱ':Math.ceil(rem)+'s';if($('#timerFill')){let max=state.phase==='reveal'?9:state.q.mode==='final'?8:state.q.mode==='music'?Math.max(30,state.seconds||25):state.seconds||25;$('#timerFill').style.width=Math.min(100,rem/max*100)+'%'}if($('#buzzTime'))$('#buzzTime').textContent=Math.max(0,Math.ceil((state.buzz.until-now)/1000));let img=$('#questionImage');if(img)img.style.filter=state.phase==='reveal'?'none':`blur(${Math.min(12,Math.max(0,rem-5)/2)}px)`}
 async function request(path,method='GET',data=null,token=''){if(!backend)throw new Error('Connect the multiplayer server in ⚙ first, or try the solo demo.');let r=await fetch(backend+path,{method,headers:{...(data?{'Content-Type':'application/json'}:{}),...(token?{Authorization:'Bearer '+token}:{})},body:data?JSON.stringify(data):undefined,signal:AbortSignal.timeout(method==='GET'?20000:90000)});let out=await r.json();if(!r.ok)throw new Error(out.error||'The server could not complete that action.');return out}
@@ -70,7 +90,9 @@ async function copy(text){try{await navigator.clipboard.writeText(text);toast('C
 async function imageFile(file,size=128){if(!file)throw new Error('Choose a picture first.');if(!/^image\/(jpeg|png|webp|heic|heif)$/i.test(file.type))throw new Error('Profile photos must be image files.');if(file.size>20*1024*1024)throw new Error('Choose an image below 20 MB.');let url=URL.createObjectURL(file);try{let img=new Image();img.src=url;await img.decode();let canvas=document.createElement('canvas');canvas.width=size;canvas.height=size;let ctx=canvas.getContext('2d');let side=Math.min(img.width,img.height);ctx.drawImage(img,(img.width-side)/2,(img.height-side)/2,side,side,0,0,size,size);let s=canvas.toDataURL('image/jpeg',.72);if(s.length>=42000){canvas.width=128;canvas.height=128;ctx.drawImage(img,0,0,img.width,img.height,0,0,128,128);s=canvas.toDataURL('image/jpeg',.6)}return s}finally{URL.revokeObjectURL(url)}}
 async function fileData(file){return new Promise((resolve,reject)=>{let r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error('Could not read the file.'));r.readAsDataURL(file)})}
 app.addEventListener('change',async ev=>{let el=ev.target;try{if(el.id==='photoInput'){saveProfile();profile.photo=await imageFile(el.files[0]);storage.set('profile',profile);if(page==='setup')readDraft();render()}else if(el.id==='themeInput'){let file=el.files[0];if(!file)throw new Error('Choose an audio clip.');if(!/^audio\//i.test(file.type))throw new Error('Theme songs must be audio files.');if(file.size>1000000)throw new Error('Keep your theme clip under 1 MB.');saveProfile();profile.theme=await fileData(file);storage.set('profile',profile);render()}else if(el.dataset.round){readDraft();draft.rounds[Number(el.dataset.round)][el.dataset.key]=el.dataset.key==='count'?Number(el.value):el.value;render()}else if(el.id==='gameAuto')await action('host',{action:'auto',value:el.checked});else if(page==='setup')readDraft();else if(el.id==='playerName')saveProfile()}catch(e){toast(e.message)}});
-app.addEventListener('click',async ev=>{let b=ev.target.closest('[data-act]');if(!b||b.disabled)return;let act=b.dataset.act;try{
+app.addEventListener('pointerdown',unlockThemeAudio,{passive:true});
+app.addEventListener('touchstart',unlockThemeAudio,{passive:true});
+app.addEventListener('click',async ev=>{unlockThemeAudio();let b=ev.target.closest('[data-act]');if(!b||b.disabled)return;let act=b.dataset.act;try{
 if(page==='setup')readDraft();
 switch(act){
 case 'home':page='home';render();window.scrollTo(0,0);break;
