@@ -58,14 +58,14 @@ Tests cover every mode, the 100-player limit, answer privacy, score limits, card
 |---|---|
 | Classic | Everyone answers. Correct players are ranked by server submission time; with N players the fastest correct answer gets N points, then N−1, downwards. |
 | Buzzer | Fastest tap gets the first attempt; a wrong answer reopens the buzzer for remaining players. |\n| Music | First buzzer locks for 12 seconds; title and artist each earn 100. Wrong title reopens buzzers for players who have not attempted. |
-| Evil | Correct answer earns 100 and steals up to 100 from a selected rival. |
+| Evil | Correct answers use the speed ladder and steal 5 points from the selected rival. Wrong answers lose 5 points. |
 | Bingo | Nine clues, personal shuffled answer cards; correct square earns 100, each new line earns 300, full house earns 1,000. |
 | Picture | Image clears gradually; correct answer earns 100. |
 | Higher/Lower | Compare a factual number to Lex’s suggestion; correct answer earns 100. |
 | Confidence Bet | Stake 0–500, limited to current score. Right: 100 + stake; wrong: lose stake. |
 | Who Said It? | Identify a short quote’s character or source; 100 per correct answer. |
-| Closest Wins | Numeric guess; everyone tied for closest earns 200. |
+| Closest Wins | Closest guess earns 50 points; an exact answer earns 100. Tied closest guesses share the award. |
 | Final | Eight seconds and 200 points per correct answer. |
-| Chaos | Correct answers earn 100. One secret power per quiz: double the correct reward, shield from steals, or steal up to 150 on a correct answer. |
+| Chaos | Correct answers earn 100. One secret power per quiz: double the correct reward, shield from steals, or steal 5 on a correct answer. |
 
 Photos are cropped and compressed in the browser. Room members can see profile photos. Host tokens and player tokens are stored in their browser and must not be shared. The public repository contains the starter question bank, so this is intended for friendly quiz nights, not proctored competitions.
