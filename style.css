@@ -216,3 +216,14 @@ body.quiz-active .number-pad{
   align-content:center!important;
   justify-content:center!important;
 }
+
+/* Full-screen round briefing shown before question one of every round. */
+.round-intro{height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:clamp(10px,2dvh,20px);max-width:760px;margin:auto;padding:clamp(18px,4vw,38px)}
+.round-intro-icon{font-size:clamp(54px,12dvh,100px);line-height:1}
+.round-intro h1{font-family:'Space Grotesk',system-ui,sans-serif;font-size:clamp(32px,9vw,64px);margin:0;line-height:1}
+.round-intro .eyebrow{margin:0}
+.round-rules{width:100%;padding:clamp(16px,3dvh,28px);box-sizing:border-box;border:1px solid var(--line);border-radius:18px;background:var(--panel)}
+.round-rules h3{color:var(--gold);margin:0 0 10px;font-size:clamp(15px,4vw,21px)}
+.round-rules p{font-size:clamp(14px,3.6vw,19px);line-height:1.45;margin:8px 0}
+.round-start{width:min(100%,420px);min-height:58px;font-size:18px}
+body.quiz-active .round-intro .notice{width:100%;box-sizing:border-box}
