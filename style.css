@@ -192,3 +192,8 @@ body.quiz-active .buzzer-event{position:absolute!important;inset:0!important;z-i
 body.quiz-active .buzzer-event .avatar{width:clamp(130px,28dvh,230px)!important;height:clamp(130px,28dvh,230px)!important;font-size:clamp(70px,16dvh,130px)!important}
 body.quiz-active .buzzer-event strong{font-size:clamp(30px,8vw,56px)!important}
 body.quiz-active .buzzer-event span{font-size:clamp(13px,3.5vw,20px)!important}
+
+/* Taller four-column letter keys; U and V are separate again. */
+body.quiz-active .play-area .alphabet-pad{grid-template-rows:repeat(7,1fr)!important;gap:clamp(5px,.7dvh,8px)!important}
+body.quiz-active .play-area .alphabet-pad button{min-height:clamp(54px,7.2dvh,70px)!important}
+@media(max-height:720px){body.quiz-active .play-area .alphabet-pad button{min-height:40px!important}}
