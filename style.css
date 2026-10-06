@@ -445,3 +445,7 @@ body.quiz-active .power .target-buttons{max-height:20dvh}
 .player-intro>.avatar.team-photo{overflow:hidden!important;border-radius:50%!important}
 .player-intro>.avatar.team-photo img{display:block!important;width:100%;height:100%;object-fit:cover}
 .player-intro>p,.intro-effect-name{display:none!important}
+
+/* v71 event scale + game-show progression */
+.fastest-event .avatar,.buzzer-event .avatar{width:clamp(155px,34vw,250px)!important;height:clamp(155px,34vw,250px)!important;font-size:clamp(76px,17vw,132px)!important}
+.achievement-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.achievement{display:inline-flex;padding:8px 11px;border:1px solid #ffc66355;border-radius:999px;background:#ffc66312;color:var(--gold);font-weight:800;font-size:12px}.career-card{margin:18px 0}
