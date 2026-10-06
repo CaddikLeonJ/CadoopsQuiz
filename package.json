@@ -1,0 +1,1 @@
+{"name":"cadoops-quiz","version":"1.0.0","private":true,"description":"Lex-hosted multiplayer quiz for phones and a shared TV","scripts":{"start":"node server.js","test":"node --test test/*.test.js"},"engines":{"node":">=22"},"license":"UNLICENSED"}
