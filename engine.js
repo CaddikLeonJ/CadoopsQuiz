@@ -46,7 +46,7 @@ output.push(q)})});return output;
 }
 class Game{
 constructor(config={},code='DEMO',now=Date.now()){
-this.code=code;this.hostToken=uuid();this.created=now;this.updated=now;this.version=1;this.capacity=clamp(config.capacity,1,100,8);this.seconds=clamp(config.seconds,5,120,25);this.auto=config.auto!==false;this.questions=plan(config);this.players=[];this.phase='lobby';this.index=-1;this.deadline=0;this.paused=false;this.buzz=null;this.message='Alright, buddy! I’m Lex. Get everyone in the room and let’s find out who knows their stuff.';this.events=[];
+this.code=code;this.hostToken=uuid();this.created=now;this.updated=now;this.version=1;this.capacity=clamp(config.capacity,1,100,8);this.seconds=10;this.auto=config.auto!==false;this.questions=plan(config);this.players=[];this.phase='lobby';this.index=-1;this.deadline=0;this.paused=false;this.buzz=null;this.message='Alright, buddy! I’m Lex. Get everyone in the room and let’s find out who knows their stuff.';this.events=[];
 }
 change(now=Date.now()){this.version++;this.updated=now}
 player(token){return this.players.find(p=>p.token===token)}
@@ -58,7 +58,7 @@ start(now=Date.now()){assert(this.phase==='lobby','The quiz has already started.
 next(now=Date.now()){
 assert(this.phase!=='finished','The quiz is finished.');this.paused=false;this.buzz=null;this.index++;
 if(this.index>=this.questions.length){this.phase='finished';let lead=[...this.players].sort((a,b)=>b.score-a.score);let tied=lead.filter(p=>p.score===lead[0].score);this.message=tied.length>1?`We have a tie! ${tied.map(p=>p.name).join(' and ')} share the win with ${lead[0].score} points.`:`${lead[0].name} takes the crown with ${lead[0].score} points! What a quiz, buddy.`;this.change(now);return}
-this.phase='question';let q=this.q();if(q.mode==='buzzer'&&q.position===1)this.buzzerLocked=[];this.deadline=now+(q.mode==='final'?8:q.mode==='music'?Math.max(30,this.seconds):this.seconds)*1000;
+this.phase='question';let q=this.q();if(q.mode==='buzzer'&&q.position===1)this.buzzerLocked=[];this.deadline=now+10000;
 this.firstCorrect=null;this.players.forEach(p=>{p.answer=null;p.activePower=null;if(q.mode==='bingo'&&q.position===1){p.grid=shuffle(q.cardAnswers);p.marks=[];p.lines=[]}});
 this.message=q.position===1?`${modes[q.mode].icon} Round ${q.round}: ${q.roundName}. ${modes[q.mode].desc}`:`Let’s go, buddy. Question ${q.position} of ${q.roundSize}.`;this.change(now)
 }
