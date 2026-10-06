@@ -2,7 +2,7 @@
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const {Game}=require('./engine.js');
 const rooms=new Map(),rates=new Map(),themeClaims=new Map();const root=__dirname;
-const builtInTheme=id=>/^(?:real:(?:ace|finalfantasy)|preset:(?:[1-9]|[1-9][0-9]|1[01][0-9]|120))$/.test(String(id||''));
+const builtInTheme=id=>/^(?:real:(?:ace|finalfantasy|spongebob)|preset:(?:[1-9]|[1-9][0-9]|1[01][0-9]|120))$/.test(String(id||''));
 const files=new Set(['index.html','app.js','style.css','config.js','questions.js','engine.js','icon.svg']);
 function json(res,status,data){res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify(data))}
 function code(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';return Array.from({length:6},()=>chars[crypto.getRandomValues(new Uint8Array(1))[0]%chars.length]).join('')}
