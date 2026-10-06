@@ -10,7 +10,7 @@ The GitHub Pages version works as a solo demo immediately. Live rooms need the N
 
 - 16 starter categories: General Knowledge, Lord of the Rings, Game of Thrones, Disney, Video Games, Science, Harry Potter, Manchester United, Marvel, DC, Pokémon, Marine Biology, Cats, Animals, Films, TV Shows.
 - 160 multiple-choice questions, 32 numeric clues, 17 quote clues and six original vector picture questions.
-- Classic Quiz, Name That Tune, Evil Round, Quiz Bingo, Picture This, Higher or Lower, Confidence Bet, Who Said It?, Closest Wins, Final Showdown and Cadoops Chaos.
+- Classic Quiz, Buzzer Round, Name That Tune, Evil Round, Quiz Bingo, Picture This, Higher or Lower, Confidence Bet, Who Said It?, Closest Wins, Final Showdown and Cadoops Chaos.
 - Random quizzes and custom round sequences; category selection, timers, player limits and automatic/manual pacing.
 - Player names, camera/photo uploads and 12 default avatars. Profiles and recent results saved on that browser.
 - Room codes, private answers, server-ordered buzzers, host controls, score corrections and reconnection.
@@ -56,8 +56,8 @@ Tests cover every mode, the 100-player limit, answer privacy, score limits, card
 
 | Round | Rules |
 |---|---|
-| Classic | 100 points per correct answer. |
-| Music | First buzzer locks for 12 seconds; title and artist each earn 100. Wrong title reopens buzzers for players who have not attempted. |
+| Classic | Everyone answers. Correct players are ranked by server submission time; with N players the fastest correct answer gets N points, then N−1, downwards. |
+| Buzzer | Fastest tap gets the first attempt; a wrong answer reopens the buzzer for remaining players. |\n| Music | First buzzer locks for 12 seconds; title and artist each earn 100. Wrong title reopens buzzers for players who have not attempted. |
 | Evil | Correct answer earns 100 and steals up to 100 from a selected rival. |
 | Bingo | Nine clues, personal shuffled answer cards; correct square earns 100, each new line earns 300, full house earns 1,000. |
 | Picture | Image clears gradually; correct answer earns 100. |
