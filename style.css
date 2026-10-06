@@ -346,3 +346,12 @@ body.quiz-active .power .target-buttons{max-height:20dvh}
 .fx-kind-ice .fx-ice-cracks,.fx-kind-ice .fx-frost{z-index:1}
 .fx-kind-water .fx-water-wave,.fx-kind-water .fx-water-splash{opacity:.42}
 .fx-kind-flames .fx-fire-core,.fx-kind-dragon .fx-fire-core,.fx-kind-firering .fx-fire-core{opacity:.5}
+
+/* v52 cinematic grade */
+.intro-fx-canvas{filter:saturate(1.28) contrast(1.12)}
+.player-intro .fx-layer{z-index:1}.player-intro>*:not(.fx-layer){z-index:4}
+.intro-preview .fx-layer{z-index:1}.intro-preview-content{z-index:4}
+.fx-kind-flames,.fx-kind-dragon,.fx-kind-firering{background:radial-gradient(ellipse at 50% 105%,rgba(255,95,0,.34),transparent 62%)}
+.fx-kind-ice{background:radial-gradient(ellipse at center,rgba(160,235,255,.13),rgba(20,90,145,.08) 45%,rgba(220,250,255,.22) 100%)}
+.fx-kind-water{background:linear-gradient(to top,rgba(0,65,135,.4),rgba(0,160,220,.08) 55%,transparent)}
+.fx-kind-explosion,.fx-kind-supernova{background:radial-gradient(circle at center,rgba(255,220,100,.13),transparent 58%)}
