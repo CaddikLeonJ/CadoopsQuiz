@@ -1,3 +1,2 @@
-// After deploying the room server, put its public HTTPS address here.
-// Example: window.CADOOPS_SERVER = 'https://your-service.onrender.com';
-window.CADOOPS_SERVER = '';
+// Cadoops Quiz live multiplayer room server.
+window.CADOOPS_SERVER = 'https://cadoops-quiz.onrender.com';
