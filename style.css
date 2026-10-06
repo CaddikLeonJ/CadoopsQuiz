@@ -186,3 +186,9 @@ body.quiz-active .steal-choice select{font-size:16px!important;min-height:48px}
  body.quiz-active .mode-bingo .bingo-grid button{font-size:12px!important;padding:3px!important}
  body.quiz-active .play-area .number-pad{gap:3px!important}
 }
+
+/* Buzzer entrance is a full gameplay event, never an overlay on answer letters. */
+body.quiz-active .buzzer-event{position:absolute!important;inset:0!important;z-index:40!important;margin:0!important;border:0!important;border-radius:inherit!important;background:radial-gradient(circle at center,#3a2b13 0%,#111018f7 55%,#08080d 100%)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:clamp(10px,2dvh,20px)!important}
+body.quiz-active .buzzer-event .avatar{width:clamp(130px,28dvh,230px)!important;height:clamp(130px,28dvh,230px)!important;font-size:clamp(70px,16dvh,130px)!important}
+body.quiz-active .buzzer-event strong{font-size:clamp(30px,8vw,56px)!important}
+body.quiz-active .buzzer-event span{font-size:clamp(13px,3.5vw,20px)!important}
