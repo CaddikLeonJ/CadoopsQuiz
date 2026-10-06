@@ -109,3 +109,30 @@ body.quiz-active .steal-clock{text-align:center;font-weight:900;color:var(--gold
  body.quiz-active .alphabet-pad button{min-height:28px}
  body.quiz-active .bingo-grid button{min-height:42px}
 }
+
+/* Locked gameplay v3: balanced vertical layout, no artificial empty middle. */
+body.quiz-active .question-card{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;gap:0!important}
+body.quiz-active .question-meta{flex:0 0 auto}
+body.quiz-active .timer-bar{flex:0 0 auto}
+body.quiz-active .question-card>.eyebrow{flex:0 0 auto;margin:0!important;padding:clamp(10px,1.7dvh,18px) 0 clamp(4px,.7dvh,8px)!important}
+body.quiz-active .question-title{flex:0 0 auto;margin:0!important;padding:clamp(8px,1.3dvh,14px) 0!important;font-size:clamp(22px,6vw,32px)!important;line-height:1.12!important}
+body.quiz-active .question-card>.muted{flex:0 0 auto;margin:0!important;padding:clamp(6px,1dvh,10px) 0!important;font-size:clamp(13px,3.4vw,17px)!important}
+body.quiz-active .alphabet-pad{flex:0 0 auto;margin:clamp(16px,3.2dvh,34px) 0 0!important;display:grid!important;grid-template-columns:repeat(7,1fr)!important;gap:clamp(6px,1.4vw,10px)!important}
+body.quiz-active .alphabet-pad button{min-height:clamp(48px,6.6dvh,62px)!important;font-size:clamp(16px,4vw,21px)!important;padding:4px!important;border-radius:14px!important}
+body.quiz-active .bingo-grid{flex:0 0 auto;margin:clamp(12px,2.2dvh,24px) 0 0!important}
+body.quiz-active .answer-grid,body.quiz-active .number-entry,body.quiz-active .number-pad,body.quiz-active .buzz-button{flex:0 0 auto;margin-top:clamp(12px,2.2dvh,24px)!important}
+body.quiz-active .locked,body.quiz-active .notice,body.quiz-active .reveal-box{flex:0 0 auto;margin-top:clamp(10px,1.8dvh,18px)!important}
+body.quiz-active .host-controls{flex:0 0 auto;margin-top:auto!important;padding-top:clamp(10px,1.8dvh,18px)!important}
+body.quiz-active .progress-note{flex:0 0 auto;padding-top:5px!important;margin:0!important}
+@media(max-width:430px){
+ body.quiz-active .alphabet-pad{grid-template-columns:repeat(7,1fr)!important}
+ body.quiz-active .alphabet-pad button{min-height:46px!important;font-size:16px!important}
+}
+@media(max-height:720px){
+ body.quiz-active .question-card>.eyebrow{padding:6px 0 2px!important}
+ body.quiz-active .question-title{font-size:20px!important;padding:5px 0!important}
+ body.quiz-active .question-card>.muted{font-size:12px!important;padding:3px 0!important}
+ body.quiz-active .alphabet-pad{margin-top:9px!important;gap:4px!important}
+ body.quiz-active .alphabet-pad button{min-height:36px!important;font-size:13px!important}
+ body.quiz-active .host-controls{padding-top:5px!important}
+}
