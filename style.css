@@ -197,3 +197,22 @@ body.quiz-active .buzzer-event span{font-size:clamp(13px,3.5vw,20px)!important}
 body.quiz-active .play-area .alphabet-pad{grid-template-rows:repeat(7,1fr)!important;gap:clamp(5px,.7dvh,8px)!important}
 body.quiz-active .play-area .alphabet-pad button{min-height:clamp(54px,7.2dvh,70px)!important}
 @media(max-height:720px){body.quiz-active .play-area .alphabet-pad button{min-height:40px!important}}
+
+/* Square gameplay answer controls. */
+body.quiz-active .alphabet-pad button,
+body.quiz-active .bingo-grid button,
+body.quiz-active .answer-grid .answer-option,
+body.quiz-active .number-pad button{
+  aspect-ratio:1/1!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  border-radius:10px!important;
+}
+body.quiz-active .alphabet-pad,
+body.quiz-active .bingo-grid,
+body.quiz-active .answer-grid,
+body.quiz-active .number-pad{
+  align-content:center!important;
+  justify-content:center!important;
+}
