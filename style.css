@@ -236,3 +236,41 @@ body.quiz-active .mode-bingo .bingo-grid button{aspect-ratio:1/1!important;width
 body.quiz-active .number-pad{grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:none!important;align-content:center!important;overflow:hidden!important}
 body.quiz-active .number-pad button{aspect-ratio:1/1!important;width:min(100%,10dvh)!important;height:auto!important;min-height:0!important;justify-self:center!important}
 body.quiz-active .answer-grid .answer-option{aspect-ratio:1/1!important;width:min(100%,25dvh)!important;height:auto!important;min-height:0!important;justify-self:center!important}
+
+/* Square keypad v2: size from BOTH available width and height; never overlap. */
+body.quiz-active .play-area .alphabet-pad{
+  --key-gap:clamp(3px,.55dvh,6px);
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  grid-template-rows:repeat(7,minmax(0,1fr))!important;
+  gap:var(--key-gap)!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  align-items:center!important;
+  justify-items:center!important;
+  align-content:stretch!important;
+  overflow:hidden!important;
+}
+body.quiz-active .play-area .alphabet-pad button{
+  box-sizing:border-box!important;
+  width:min(calc((100vw - 50px - 3 * var(--key-gap))/4),calc((100dvh - 360px - 6 * var(--key-gap))/7))!important;
+  height:auto!important;
+  aspect-ratio:1/1!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  align-self:center!important;
+  justify-self:center!important;
+}
+@media(max-height:720px){
+ body.quiz-active .play-area .alphabet-pad button{
+   width:min(calc((100vw - 42px - 9px)/4),calc((100dvh - 300px - 18px)/7))!important;
+ }
+}
