@@ -227,3 +227,12 @@ body.quiz-active .number-pad{
 .round-rules p{font-size:clamp(14px,3.6vw,19px);line-height:1.45;margin:8px 0}
 .round-start{width:min(100%,420px);min-height:58px;font-size:18px}
 body.quiz-active .round-intro .notice{width:100%;box-sizing:border-box}
+
+/* True 1:1 answer tiles, constrained to the locked viewport. */
+body.quiz-active .play-area .alphabet-pad{grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-template-rows:none!important;grid-auto-rows:auto!important;align-content:center!important;width:100%!important;max-width:100%!important;overflow:hidden!important}
+body.quiz-active .play-area .alphabet-pad button{aspect-ratio:1/1!important;width:min(100%,11.2dvh)!important;height:auto!important;min-width:0!important;min-height:0!important;max-width:100%!important;justify-self:center!important;padding:0!important}
+body.quiz-active .mode-bingo .bingo-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:none!important;align-content:center!important;overflow:hidden!important}
+body.quiz-active .mode-bingo .bingo-grid button{aspect-ratio:1/1!important;width:min(100%,18dvh)!important;height:auto!important;min-height:0!important;justify-self:center!important}
+body.quiz-active .number-pad{grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:none!important;align-content:center!important;overflow:hidden!important}
+body.quiz-active .number-pad button{aspect-ratio:1/1!important;width:min(100%,10dvh)!important;height:auto!important;min-height:0!important;justify-self:center!important}
+body.quiz-active .answer-grid .answer-option{aspect-ratio:1/1!important;width:min(100%,25dvh)!important;height:auto!important;min-height:0!important;justify-self:center!important}
