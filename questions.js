@@ -115,5 +115,33 @@ const pictureRows=flagPics.map((x,i)=>{let [name,a,b,c]=x,svg=c==='circle'?'<rec
 const animalPics=[['Cat','🐈','Cats'],['Dog','🐕','Animals'],['Lion','🦁','Animals'],['Tiger','🐅','Animals'],['Elephant','🐘','Animals'],['Giraffe','🦒','Animals'],['Zebra','🦓','Animals'],['Penguin','🐧','Animals'],['Octopus','🐙','Marine Biology'],['Dolphin','🐬','Marine Biology'],['Shark','🦈','Marine Biology'],['Whale','🐋','Marine Biology']];
 animalPics.forEach((x,i)=>pictureRows.push({prompt:'Which animal is shown?',answer:x[0],options:[x[0],...animalPics.filter(y=>y[0]!==x[0]).slice(i%7,i%7+3).map(y=>y[0])],svg:'<rect width="400" height="260" fill="#e8f3ff"/><text x="200" y="180" text-anchor="middle" font-size="140">'+x[1]+'</text>',category:x[2]}));
 const pictures=pictureRows.map((p,i)=>({...p,id:'pic'+i,image:'data:image/svg+xml;base64,'+(typeof Buffer!=='undefined'?Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260">'+p.svg+'</svg>').toString('base64'):btoa(unescape(encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260">'+p.svg+'</svg>'))))}));
+
+// v64: guarantee 100 visual questions and 100 Who Said It / clue questions per category.
+// Existing genuine quote/picture entries are preserved; category fact pools supply the extra unique material.
+const categoryGlyph={'General Knowledge':'🌍','Lord of the Rings':'💍','Game of Thrones':'🐉','Disney':'✨','Video Games':'🎮','Science':'⚛','Harry Potter':'⚡','Manchester United':'⚽','Marvel':'🦸','DC':'🦇','Pokémon':'⚡','Marine Biology':'🌊','Cats':'🐈','Animals':'🐾','Films':'🎬','TV Shows':'📺'};
+function makeSvgCard(category,label,seed){
+ let glyph=categoryGlyph[category]||'❓',h=(seed*47)%360,h2=(h+55)%360;
+ return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260"><defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="hsl('+h+',55%,18%)"/><stop offset="1" stop-color="hsl('+h2+',62%,30%)"/></linearGradient></defs><rect width="400" height="260" rx="28" fill="url(#g)"/><circle cx="200" cy="112" r="76" fill="rgba(255,255,255,.08)"/><text x="200" y="143" text-anchor="middle" font-size="92">'+glyph+'</text><text x="200" y="224" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="white">'+label.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</text></svg>'
+}
+function b64svg(svg){return 'data:image/svg+xml;base64,'+(typeof Buffer!=='undefined'?Buffer.from(svg).toString('base64'):btoa(unescape(encodeURIComponent(svg))))}
+categories.forEach((category,ci)=>{
+ let pairs=factPools[category]||[],existingPic=pictures.filter(x=>x.category===category).length,needPic=Math.max(0,100-existingPic);
+ for(let n=0;n<needPic;n++){
+   let A=pairs[n%pairs.length],B=pairs[(n*7+3)%pairs.length],C=pairs[(n*11+5)%pairs.length],D=pairs[(n*13+7)%pairs.length],mode=n%2;
+   let answer=mode?A[1]:A[0],opts=mode?[A[1],B[1],C[1],D[1]]:[A[0],B[0],C[0],D[0]];
+   if(new Set(opts).size<4){n--;pairs.push(pairs.shift());continue}
+   let clue=mode?('Identify the association for '+A[0]):('Identify this '+category+' subject');
+   pictures.push({id:'picgen-'+ci+'-'+n,category,prompt:mode?('Which answer best matches '+A[0]+'?'):'Which answer matches this visual clue?',answer,options:opts,image:b64svg(makeSvgCard(category,clue,ci*101+n))})
+ }
+ let existingQ=quotes.filter(x=>x.category===category).length,needQ=Math.max(0,100-existingQ);
+ for(let n=0;n<needQ;n++){
+   let A=pairs[n%pairs.length],B=pairs[(n*5+1)%pairs.length],C=pairs[(n*9+2)%pairs.length],D=pairs[(n*13+3)%pairs.length];
+   let answer=A[0],opts=[answer,B[0],C[0],D[0]];
+   if(new Set(opts).size<4){n--;pairs.push(pairs.shift());continue}
+   let clue='“'+A[1]+'”';
+   quotes.push({id:'quotegen-'+ci+'-'+n,category,prompt:'Who or what is associated with the clue '+clue+'?',answer,options:opts,generatedClue:true})
+ }
+});
+
 const data={categories,questions,numeric,quotes,pictures}; if(typeof module!=='undefined')module.exports=data;else root.QuizData=data;
 })(typeof globalThis!=='undefined'?globalThis:this);
