@@ -369,7 +369,62 @@ Object.entries(root.CadoopsResearchBanks||{}).forEach(([category,rows])=>{
   if(!raw[category]) raw[category]=[];
   raw[category].push(...rows);
 });
-const questions=categories.flatMap((category,c)=>{let seen=new Set();return raw[category].filter(r=>Array.isArray(r)&&r.length===5&&r.every(v=>String(v).trim().length>0)&&new Set(r.slice(1).map(v=>String(v).trim().toLowerCase())).size===4).filter(r=>{let k=String(r[0]).trim().toLowerCase();if(seen.has(k))return false;seen.add(k);return true}).map((r,i)=>({id:'c'+c+'q'+i,category,prompt:r[0],answer:r[1],options:r.slice(1)}))});
+// v104: replace the ambiguous Friends "plotline grouping count" filler with normal, playable trivia.
+raw['Friends'].push(...[
+["What is Ross's pet monkey called?","Marcel","Maurice","Milo","Max"],
+["What song is Phoebe best known for performing at Central Perk?","Smelly Cat","Sticky Shoes","Little Black Curly Hair","Two of Them Kissed Last Night"],
+["What is Joey's soap-opera character called?","Dr. Drake Ramoray","Dr. Richard Burke","Dr. Leonard Green","Dr. Roger"],
+["What is Phoebe's twin sister called?","Ursula Buffay","Amy Green","Jill Green","Alice Knight"],
+["Who does Phoebe marry?","Mike Hannigan","David","Gary","Duncan"],
+["What is Ross and Rachel's daughter called?","Emma","Erica","Emily","Ella"],
+["What is Ross's son called?","Ben","Jack","Frank","Owen"],
+["What is Monica's profession?","Chef","Fashion buyer","Masseuse","Paleontologist"],
+["Which fashion company does Rachel work for later in the series?","Ralph Lauren","Gucci","Macy's","Versace"],
+["What is Chandler's middle name?","Muriel","Michael","Matthew","Maurice"],
+["Who is Monica's older brother?","Ross","Chandler","Joey","Richard"],
+["Where does Gunther work?","Central Perk","Monica's restaurant","Bloomingdale's","The museum"],
+["In which city do Ross and Emily get married?","London","Paris","New York","Rome"],
+["Which word does Ross repeatedly shout while moving a sofa?","Pivot","Lift","Turn","Push"],
+["What is Joey's stuffed penguin called?","Hugsy","Waddles","Snowy","Pingu"],
+["What dessert does Rachel accidentally make with beef?","Trifle","Cheesecake","Tiramisu","Pavlova"],
+["Which friend repeatedly insists that he and Rachel were 'on a break'?","Ross","Joey","Chandler","Mike"],
+["Which friend uses 'How you doin'?' as a pickup line?","Joey","Chandler","Ross","Gunther"],
+["What is the first name of Rachel's fiancé whom she leaves at the altar?","Barry","Paolo","Joshua","Tag"],
+["Who is Monica's older eye-doctor boyfriend?","Richard Burke","Pete Becker","Paul Stevens","Fun Bobby"],
+["What kind of place is Central Perk?","Coffee shop","Restaurant","Bar","Bookshop"],
+["What subject does Ross study professionally?","Paleontology","Astronomy","Archaeology","Zoology"],
+["Which friend works as a masseuse?","Phoebe","Rachel","Monica","Janice"],
+["In which city do Monica and Chandler first sleep together?","London","Las Vegas","New York","Barbados"],
+["Who gives birth to triplets for Frank Jr. and Alice?","Phoebe","Monica","Rachel","Carol"],
+["What are Monica and Chandler's adopted twins called?","Jack and Erica","Ben and Emma","Frank and Alice","Judy and Jack"],
+["Which recurring character is famous for saying 'Oh. My. God.'?","Janice","Kathy","Julie","Charlie"],
+["What do the six friends leave on Monica's counter in the final scene?","Their keys","Coffee mugs","Photo frames","Wedding rings"]
+]);
+const rejectStandardPrompt=p=>/^How many distinct main-character plotline groupings are recorded for Friends\b/i.test(String(p||''));
+const cleanPrompt=p=>{p=String(p||'').trim();
+  p=p.replace(/^Which of these main-character combinations shares a recorded plotline in Friends /i,'Which of these character groups shares a storyline in Friends ');
+  p=p.replace(/^According to The Cat API breed profile,\s*/i,'');
+  p=p.replace(/^On The Cat API's 1–5 breed scale,\s*/i,'On a 1–5 breed-trait scale, ');
+  p=p.replace(/^What runtime does the LOTR API list for "([^"]+)"\?$/i,'What is the runtime of "$1"?');
+  p=p.replace(/^How many Academy Awards does the LOTR API record "([^"]+)" as winning\?$/i,'How many Academy Awards did "$1" win?');
+  p=p.replace(/^How many Academy Award nominations does the LOTR API record for "([^"]+)"\?$/i,'How many Academy Award nominations did "$1" receive?');
+  p=p.replace(/^What production budget does the LOTR API list for "([^"]+)"\?$/i,'What was the production budget of "$1"?');
+  p=p.replace(/^How does FishBase classify (.+?) by water-column lifestyle\?$/i,'What water-column lifestyle classification applies to $1?');
+  p=p.replace(/^What maximum length is listed by FishBase for (.+?)\?$/i,'What is the maximum recorded length of $1?');
+  p=p.replace(/^What gender is (.+?) listed as in the Stranger Things character dataset\?$/i,'What gender is $1 in Stranger Things?');
+  p=p.replace(/^Which platform was the game "([^"]+)" released on in this catalogue entry\?$/i,'Which platform was "$1" released on?');
+  p=p.replace(/^Which company published "([^"]+)" in the video-game sales catalogue\?$/i,'Which company published "$1"?');
+  p=p.replace(/^In which comic entry is (.+?) listed as first appearing\?$/i,'In which comic did $1 first appear?');
+  p=p.replace(/^Where is (Marvel|DC) character (.+?) listed as having been born\?$/i,'Where was $2 born?');
+  p=p.replace(/^Which genre is "([^"]+)" listed under in the Disney movie dataset\?$/i,'Which genre best matches Disney’s "$1"?');
+  return p;
+};
+const questions=categories.flatMap((category,c)=>{let seen=new Set();return raw[category]
+  .filter(r=>Array.isArray(r)&&r.length===5&&r.every(v=>String(v).trim().length>0)&&new Set(r.slice(1).map(v=>String(v).trim().toLowerCase())).size===4)
+  .filter(r=>!rejectStandardPrompt(r[0]))
+  .map(r=>[cleanPrompt(r[0]),...r.slice(1)])
+  .filter(r=>{let k=String(r[0]).trim().toLowerCase();if(seen.has(k))return false;seen.add(k);return true})
+  .map((r,i)=>({id:'c'+c+'q'+i,category,prompt:r[0],answer:r[1],options:r.slice(1)}))});
 const starWarsNumeric=[
 ['In what year was the original Star Wars film released?',1977,'year','Star Wars'],
 ['How many films are in the numbered Skywalker Saga?',9,'films','Star Wars'],
