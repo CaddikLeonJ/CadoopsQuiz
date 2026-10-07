@@ -138,7 +138,85 @@ Object.entries({"General Knowledge":[["What is the capital of Canada?","Ottawa",
 ['Which animated sitcom centres on the Griffin family?','Family Guy','The Simpsons','American Dad!','Bob’s Burgers']
 ]
 }).forEach(([category,rows])=>raw[category].push(...rows));
-const questions=categories.flatMap((category,c)=>raw[category].map((r,i)=>({id:'c'+c+'q'+i,category,prompt:r[0],answer:r[1],options:r.slice(1)})));\nconst numeric=[
+const questions=categories.flatMap((category,c)=>raw[category].map((r,i)=>({id:'c'+c+'q'+i,category,prompt:r[0],answer:r[1],options:r.slice(1)})));\n// v85 researched explicit additions (official/reference-source facts; no generated reversals)
+({
+'General Knowledge':[
+['How many planets are in our solar system?','Eight','Seven','Nine','Ten'],
+['Which galaxy contains our solar system?','Milky Way','Andromeda','Triangulum','Sombrero'],
+['What is the largest planet in our solar system?','Jupiter','Saturn','Neptune','Earth'],
+['Which planet is nearest the Sun?','Mercury','Venus','Earth','Mars'],
+['Which two planets have no natural moons?','Mercury and Venus','Earth and Mars','Jupiter and Saturn','Uranus and Neptune'],
+['What is the only dwarf planet in the inner solar system?','Ceres','Pluto','Eris','Makemake']
+],
+'Science':[
+['Which four planets are the terrestrial planets?','Mercury, Venus, Earth and Mars','Earth, Mars, Jupiter and Saturn','Jupiter, Saturn, Uranus and Neptune','Venus, Earth, Uranus and Neptune'],
+['Which two planets are classified as gas giants?','Jupiter and Saturn','Uranus and Neptune','Earth and Mars','Mercury and Venus'],
+['Which two planets are classified as ice giants?','Uranus and Neptune','Jupiter and Saturn','Mars and Jupiter','Venus and Earth'],
+['About how old is the solar system?','4.6 billion years','460 million years','13.8 billion years','46 billion years'],
+['What is the name of the spiral-arm region containing our Sun?','Orion Spur','Perseus Core','Andromeda Arm','Kuiper Spur'],
+['Which dwarf planet was reclassified from planet status in 2006?','Pluto','Ceres','Eris','Haumea'],
+['What is an astronomical unit approximately equal to?','The average Earth-Sun distance','The Earth-Moon distance','One light-year','The Sun-Jupiter distance']
+],
+'Manchester United':[
+['How many English league titles has Manchester United won?','20','18','21','13'],
+['How many UEFA Champions League/European Cup titles has Manchester United won?','3','2','4','5'],
+['In which years did Manchester United win the European Cup/Champions League?','1968, 1999 and 2008','1968, 1994 and 2008','1977, 1999 and 2008','1968, 1999 and 2013'],
+['How many FA Cups had Manchester United won by 2024?','13','12','14','11'],
+['Which club did Manchester United beat in the 1968 European Cup final?','Benfica','Bayern Munich','Barcelona','Real Madrid'],
+['Who scored twice for Manchester United in the 1968 European Cup final?','Bobby Charlton','George Best','Brian Kidd','Denis Law'],
+['Which club did United beat to win their first League Cup in 1992?','Nottingham Forest','Liverpool','Aston Villa','Arsenal'],
+['Who scored the winner in United’s 1992 League Cup final victory?','Brian McClair','Mark Hughes','Ryan Giggs','Steve Bruce'],
+['Which team did Manchester United beat in the 1909 FA Cup final?','Bristol City','Blackpool','Liverpool','Leicester City'],
+['Who scored United’s winner in the 1909 FA Cup final?','Sandy Turnbull','Billy Meredith','Charlie Roberts','Jimmy Turnbull'],
+['Which manager was appointed by Manchester United in 1986?','Alex Ferguson','Ron Atkinson','Matt Busby','Tommy Docherty'],
+['In which season did Manchester United win their first Premier League title?','1992/93','1993/94','1991/92','1995/96'],
+['What nickname was given to Matt Busby’s famous young United side?','Busby Babes','Red Devils XI','Fergie Fledglings','Old Trafford Boys'],
+['In which year did Manchester United first win the FA Cup?','1909','1908','1911','1948'],
+['In which year did Manchester United first win the European Cup?','1968','1958','1999','2008']
+],
+'DC':[
+['What is Wonder Woman’s alter ego?','Diana Prince','Lois Lane','Selina Kyle','Barbara Gordon'],
+['Where was Wonder Woman raised?','Themyscira','Metropolis','Gotham City','Oa'],
+['In which comic did Wonder Woman first appear?','All-Star Comics #8','Action Comics #1','Detective Comics #27','The Flash #1'],
+['What is Superman’s Kryptonian name?','Kal-El','Jor-El','Zod','Kon-El'],
+['What is Superman’s civilian identity?','Clark Kent','Bruce Wayne','Barry Allen','Hal Jordan'],
+['What is Superman’s base of operations?','Metropolis','Gotham City','Central City','Coast City'],
+['In which comic did Superman first appear?','Action Comics #1','Detective Comics #27','All-Star Comics #8','Superman #100']
+],
+'Harry Potter':[
+['What London pub serves as a gateway to Diagon Alley?','The Leaky Cauldron','The Three Broomsticks','The Hog’s Head','The Green Dragon'],
+['What is the wizarding prison called?','Azkaban','Nurmengard','Gringotts','St Mungo’s'],
+['What species is Aragog?','Acromantula','Basilisk','Thestral','Hippogriff'],
+['What type of magical profession hunts Dark witches and wizards?','Auror','Unspeakable','Healer','Magizoologist']
+],
+'Pokémon':[
+['What is Bulbasaur’s National Pokédex number?','1','4','7','25'],
+['What are Bulbasaur’s two types?','Grass and Poison','Grass and Ground','Poison and Bug','Grass and Fairy'],
+['What type is Charmander?','Fire','Fire and Flying','Dragon','Normal'],
+['What are Charizard’s two types?','Fire and Flying','Fire and Dragon','Dragon and Flying','Fire and Ground'],
+['What type is Squirtle?','Water','Water and Ice','Water and Ground','Normal'],
+['What is Pikachu’s National Pokédex number?','25','26','24','35'],
+['What is Numel’s National Pokédex number?','322','323','321','232'],
+['What are Numel’s two types?','Fire and Ground','Fire and Rock','Ground and Rock','Fire and Normal']
+],
+'Disney':[
+['In what year was The Walt Disney Company founded?','1923','1928','1937','1955'],
+['Which Disney-Pixar film was the first fully computer-animated feature film?','Toy Story','Cars','A Bug’s Life','The Incredibles'],
+['In what year was the original Toy Story released?','1995','1994','1996','1998'],
+['Which two characters were introduced as central stars of Toy Story?','Woody and Buzz Lightyear','Mike and Sulley','Nemo and Dory','Lightning McQueen and Mater'],
+['In what year was the Walt Disney Archives established?','1970','1955','1989','2001']
+],
+'Films':[
+['Which 1995 film became the first fully computer-animated feature?','Toy Story','Jumanji','Pocahontas','Babe'],
+['Which organisation maintains the official Academy Awards database?','Academy of Motion Picture Arts and Sciences','British Film Institute','Screen Actors Guild','Hollywood Foreign Press Association']
+],
+'TV Shows':[
+['What species is the Doctor in Doctor Who?','Time Lord','Human','Dalek','Cyberman'],
+['What is the Doctor’s time machine called?','TARDIS','Torchwood','Gallifrey','UNIT'],
+['Which married couple travelled with the Eleventh Doctor?','Amy Pond and Rory Williams','Rose Tyler and Mickey Smith','Donna Noble and Shaun Temple','Clara Oswald and Danny Pink']
+]
+}).forEach(([category,rows])=>raw[category].push(...rows));
+const numeric=[
 ['How many bones are in a typical adult human skeleton?',206,'bones','Science'],['How many elements have atomic numbers from 1 to 118?',118,'elements','Science'],['In which year was the first Harry Potter novel published in the UK?',1997,'year','Harry Potter'],['How many players are on one Quidditch team on the pitch?',7,'players','Harry Potter'],['In which year did Manchester United win their 1999 treble?',1999,'year','Manchester United'],['In which year was Manchester United founded as Newton Heath?',1878,'year','Manchester United'],['How many Pokémon were in the original Generation I Pokédex?',151,'Pokémon','Pokémon'],['What is Pikachu’s National Pokédex number?',25,'number','Pokémon'],['How many members begin the Fellowship of the Ring?',9,'members','Lord of the Rings'],['How many rings were given to the dwarf-lords?',7,'rings','Lord of the Rings'],['How many seasons does the HBO Game of Thrones series have?',8,'seasons','Game of Thrones'],['How many dragons hatch for Daenerys at the end of season one?',3,'dragons','Game of Thrones'],['How many dwarfs are in Disney’s Snow White?',7,'dwarfs','Disney'],['In which year was Disney’s The Lion King first released?',1994,'year','Disney'],['How many hearts does an octopus have?',3,'hearts','Marine Biology'],['How many pairs of gill slits do most sharks have?',5,'pairs','Marine Biology'],['How many neck vertebrae does a typical domestic cat have?',7,'vertebrae','Cats'],['How many toes does a typical cat have across all four paws?',18,'toes','Cats'],['How many legs does a spider have?',8,'legs','Animals'],['How many chambers does a crocodile’s heart have?',4,'chambers','Animals'],['In which year was the first Toy Story film released?',1995,'year','Films'],['In which year was the original Jurassic Park released?',1993,'year','Films'],['How many seasons does the original Friends series have?',10,'seasons','TV Shows'],['How many seasons does Breaking Bad have?',5,'seasons','TV Shows'],['How many Infinity Stones are there in the MCU?',6,'stones','Marvel'],['In which year was the first MCU Iron Man film released?',2008,'year','Marvel'],['In which year did Batman first appear in Detective Comics #27?',1939,'year','DC'],['In which year did Superman first appear in Action Comics #1?',1938,'year','DC'],['In which year was the first Sonic the Hedgehog game released?',1991,'year','Video Games'],['How many squares are in a standard Tetris tetromino?',4,'squares','Video Games'],['How many minutes are in a day?',1440,'minutes','General Knowledge'],['How many squares are on a chessboard?',64,'squares','General Knowledge']
 ].map((r,i)=>({id:`n${i}`,prompt:r[0],value:r[1],unit:r[2],category:r[3]}));
 const quoteRows=[["You shall not pass!","Gandalf","Lord of the Rings"],["My precious.","Gollum","Lord of the Rings"],["What about second breakfast?","Pippin","Lord of the Rings"],["One does not simply walk into Mordor.","Boromir","Lord of the Rings"],["Winter is coming.","Ned Stark","Game of Thrones"],["Hold the door!","Hodor","Game of Thrones"],["Chaos is a ladder.","Petyr Baelish","Game of Thrones"],["You know nothing, Jon Snow.","Ygritte","Game of Thrones"],["Dracarys.","Daenerys Targaryen","Game of Thrones"],["To infinity and beyond!","Buzz Lightyear","Disney"],["Just keep swimming.","Dory","Disney"],["Hakuna Matata!","Timon and Pumbaa","Disney"],["Ohana means family.","Lilo","Disney"],["The cold never bothered me anyway.","Elsa","Disney"],["It's-a me, Mario!","Mario","Video Games"],["Finish him!","Mortal Kombat announcer","Video Games"],["Would you kindly?","Atlas","Video Games"],["War. War never changes.","Fallout narrator","Video Games"],["You're a wizard, Harry.","Rubeus Hagrid","Harry Potter"],["Always.","Severus Snape","Harry Potter"],["Mischief managed.","Harry Potter","Harry Potter"],["I solemnly swear that I am up to no good.","Harry Potter","Harry Potter"],["Not my daughter, you bitch!","Molly Weasley","Harry Potter"],["I am Iron Man.","Tony Stark","Marvel"],["I am Groot.","Groot","Marvel"],["We have a Hulk.","Tony Stark","Marvel"],["Wakanda forever!","T'Challa","Marvel"],["Dormammu, I've come to bargain.","Doctor Strange","Marvel"],["Why so serious?","The Joker","DC"],["I'm Batman.","Batman","DC"],["I am vengeance.","Batman","DC"],["I'll be back.","The Terminator","Films"],["Here's Johnny!","Jack Torrance","Films"],["E.T. phone home.","E.T.","Films"],["Nobody puts Baby in a corner.","Johnny Castle","Films"],["I see dead people.","Cole Sear","Films"],["Why did it have to be snakes?","Indiana Jones","Films"],["Wax on, wax off.","Mr. Miyagi","Films"],["Show me the money!","Jerry Maguire","Films"],["You talking to me?","Travis Bickle","Films"],["How you doin'?","Joey Tribbiani","TV Shows"],["Lovely jubbly!","Del Boy","TV Shows"],["D'oh!","Homer Simpson","TV Shows"],["Bazinga!","Sheldon Cooper","TV Shows"],["I am the one who knocks!","Walter White","TV Shows"],["No soup for you!","The Soup Nazi","TV Shows"],["Suit up!","Barney Stinson","TV Shows"],["Pika pika!","Pikachu","Pokémon"],["Prepare for trouble!","Jessie","Pokémon"],["Make it double!","James","Pokémon"],["Wobbuffet!","Wobbuffet","Pokémon"],["Meowth, that's right!","Meowth","Pokémon"]];
