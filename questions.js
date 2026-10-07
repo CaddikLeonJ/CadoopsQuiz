@@ -356,7 +356,7 @@ Object.entries({
 ],
 'Films':[
 ['Which 1995 film became the first fully computer-animated feature?','Toy Story','Jumanji','Pocahontas','Babe'],
-['Which organisation maintains the official Academy Awards database?','Academy of Motion Picture Arts and Sciences','British Film Institute','Screen Actors Guild','Hollywood Foreign Press Association']
+['Which organisation presents the Academy Awards?','Academy of Motion Picture Arts and Sciences','British Film Institute','Screen Actors Guild','Hollywood Foreign Press Association']
 ],
 'TV Shows':[
 ['What species is the Doctor in Doctor Who?','Time Lord','Human','Dalek','Cyberman'],
