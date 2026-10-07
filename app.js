@@ -271,7 +271,7 @@ if(page==='setup')readDraft();
 switch(act){
 case 'home':page='home';render();window.scrollTo(0,0);break;
 case 'setup':page='setup';render();window.scrollTo(0,0);break;
-case 'profilePage':saveProfile();await refreshGlobalThemeClaims();page='profile';render();window.scrollTo(0,0);break;
+case 'profilePage':saveProfile();page='profile';render();window.scrollTo(0,0);refreshGlobalThemeClaims().then(()=>{if(page==='profile')render()}).catch(()=>{});break;
 case 'saveProfilePage':{let chosen=$('#themePreset')?.value||'';await refreshGlobalThemeClaims();if(claimedThemeSet().has(chosen))throw new Error('That theme is already claimed by another player. Choose a different one.');await assertThemeFree(chosen);saveProfile();await claimProfileTheme(chosen);storage.set('profile',profile);toast('Player profile saved and theme claimed.');page='home';render();window.scrollTo(0,0);break}
 case 'joinPage':await refreshGlobalThemeClaims();page='join';render();break;
 case 'toggleTv':saveProfile();page=page==='tvjoin'?'join':'tvjoin';render();break;
@@ -301,7 +301,7 @@ case 'soloAvatar':{let i=Number(b.dataset.player);soloRoster[i].avatar=Number(b.
 case 'soloRemovePhoto':{let i=Number(b.dataset.player);soloRoster[i].photo='';render();break}
 case 'soloPreviewTheme':{let i=Number(b.dataset.player),id=$('#soloThemePreset')?.value||soloRoster[i].themePreset;if(id)playPresetTheme(id);break}
 case 'saveSoloPlayer':{let i=Number(b.dataset.player);soloRoster[i].name=$('#soloName').value.trim()||('Player '+(i+1));let tp=$('#soloThemePreset');if(tp){soloRoster[i].themePreset=tp.value;if(tp.value)soloRoster[i].theme=''}if(i===0){profile={...soloRoster[0]};storage.set('profile',profile)}page='soloPlayers';render();break}
-case 'demo':await refreshGlobalThemeClaims();makeSoloRoster(draft.soloPlayers||8);page='soloPlayers';render();window.scrollTo(0,0);break;
+case 'demo':makeSoloRoster(draft.soloPlayers||8);page='soloPlayers';render();window.scrollTo(0,0);refreshGlobalThemeClaims().catch(()=>{});break;
 case 'join':await joinRoom();break;
 case 'resume':if(!session)break;if(session.demo){let saved=storage.get('demo',null);if(!saved)throw new Error('That demo is no longer saved. Start another one.');local=Object.assign(Object.create(E.Game.prototype),saved)}else backend=session.server||backend;page='room';await poll(true);break;
 case 'leave':page='home';state=null;local=null;setSession(null);if('speechSynthesis'in window)speechSynthesis.cancel();render();break;
