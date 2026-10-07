@@ -475,3 +475,7 @@ body.quiz-active .power .target-buttons{max-height:20dvh}
 .buzzer-event{width:100%!important;margin:10px auto!important;display:flex!important;flex-direction:column!important}
 /* Effects fill the stage and never influence content alignment. */
 .intro-preview>.fx-layer,.player-intro>.fx-layer,.fastest-event>.fx-layer,.buzzer-event>.fx-layer{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important;transform:none!important;pointer-events:none!important}
+
+/* v83: photographic solo/player portraits are always square in every event surface. */
+.player-intro .team-photo,.intro-preview .team-photo,.fastest-event .team-photo,.buzzer-event .team-photo,.celebration .team-photo{border-radius:0!important;clip-path:none!important;overflow:hidden!important}
+.player-intro .team-photo img,.intro-preview .team-photo img,.fastest-event .team-photo img,.buzzer-event .team-photo img,.celebration .team-photo img{border-radius:0!important;clip-path:none!important;width:100%!important;height:100%!important;object-fit:cover!important}
