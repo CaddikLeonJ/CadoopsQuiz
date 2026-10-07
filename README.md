@@ -9,7 +9,7 @@ The GitHub Pages version works as a solo demo immediately. Live rooms need the N
 ## Features
 
 - 22 categories: General Knowledge, Lord of the Rings, Game of Thrones, Disney, Video Games, Science, Harry Potter, Manchester United, Marvel, DC, Pokémon, Marine Biology, Cats, Animals, Films, TV Shows, Stranger Things, Big Bang Theory, Friends, House of the Dragon, The Walking Dead and Star Wars.
-- 22,052 unique standard multiple-choice questions after the v105 quality audit, plus dedicated numeric, quote, clue, picture and music-round material.
+- 21,965 unique standard multiple-choice questions after the v105 quality audit, plus dedicated numeric, quote, clue, picture and music-round material.
 - 20 round types: Classic Quiz, Buzzer Round, Name That Tune, Steal Round, Toxic Round, Quiz Bingo, Picture This, Higher or Lower, Confidence Bet, Who Said It?, Clue Me In, Who Am I?, Connections, Head-to-Head, Elimination, Category Roulette, The Chasedown, Closest Wins, Final Showdown and Cadoops Chaos.
 - Random quizzes and custom round sequences; category selection, timers, player limits and automatic/manual pacing.
 - Player names, camera/photo uploads and 12 default avatars. Profiles and recent results saved on that browser.
