@@ -39,6 +39,7 @@ Object.entries({"General Knowledge":[["What is the capital of Canada?","Ottawa",
 
 // v62: large deterministic expansion. These are generated from category-specific fact pools,
 // giving every category a much deeper bank without network calls during a quiz.
+const normFact=v=>String(v||'').trim().toLowerCase();
 const factPools={
 'General Knowledge':[['France','Paris'],['Germany','Berlin'],['Spain','Madrid'],['Italy','Rome'],['Portugal','Lisbon'],['Ireland','Dublin'],['Norway','Oslo'],['Sweden','Stockholm'],['Finland','Helsinki'],['Denmark','Copenhagen'],['Poland','Warsaw'],['Greece','Athens'],['Austria','Vienna'],['Belgium','Brussels'],['Netherlands','Amsterdam'],['Switzerland','Bern'],['Hungary','Budapest'],['Romania','Bucharest'],['Bulgaria','Sofia'],['Croatia','Zagreb'],['Serbia','Belgrade'],['Japan','Tokyo'],['China','Beijing'],['India','New Delhi'],['Thailand','Bangkok'],['Vietnam','Hanoi'],['South Korea','Seoul'],['Egypt','Cairo'],['Kenya','Nairobi'],['Argentina','Buenos Aires'],['Chile','Santiago'],['Peru','Lima'],['Mexico','Mexico City'],['Canada','Ottawa'],['New Zealand','Wellington']],
 'Lord of the Rings':[['Frodo Baggins','Hobbit'],['Samwise Gamgee','Hobbit'],['Meriadoc Brandybuck','Hobbit'],['Peregrin Took','Hobbit'],['Gandalf','Wizard'],['Saruman','Wizard'],['Legolas','Elf'],['Gimli','Dwarf'],['Aragorn','Man'],['Boromir','Man'],['Éowyn','Woman of Rohan'],['Théoden','King of Rohan'],['Elrond','Elf'],['Galadriel','Elf'],['Treebeard','Ent'],['Sméagol','Gollum'],['Shelob','Giant spider'],['Shadowfax','Horse'],['Sauron','Dark Lord'],['Gríma Wormtongue','Counsellor']],
@@ -82,25 +83,26 @@ function expandFactPool(category,pairs,target=1000){
  for(let ti=0;ti<templates.length;ti++)for(let i=0;i<n;i++){
    let [q,ans]=templates[ti](...pairs[i]);if(seen.has(q.toLowerCase()))continue;
    let vals=pairs.map(x=>templates[ti](...x)[1]),wrong=[];for(let k=1;k<n&&wrong.length<3;k++){let v=vals[(i+k*7)%n];if(v!==ans&&!wrong.includes(v))wrong.push(v)}
-   if(wrong.length===3){rows.push([q,ans,...wrong]);seen.add(q.toLowerCase())}
- }
- // Fill the deep bank only with questions that name the subject explicitly.
- // Do not generate vague "which pair belongs to this category?" questions: those become
- // impossible in first-letter rounds because multiple options can be simultaneously true.
+   if(wrong.length===3){rows // Deep-bank expansion: only generate questions whose wording uniquely determines one answer.
+ // If several subjects share the same value (for example multiple LOTR characters are Hobbits),
+ // never reverse that value into "which subject?" because it would have several correct answers.
+ let valueCounts=new Map();pairs.forEach(x=>valueCounts.set(normFact(x[1]),(valueCounts.get(normFact(x[1]))||0)+1));
  let seed=0;
  while(rows.length<target){
-   let i=seed%n,A=pairs[i],mode=seed%2,q,ans,vals;
-   if(mode===0){q=`Which description or association matches ${A[0]}?`;ans=A[1];vals=pairs.map(x=>x[1])}
-   else{q=`Which ${category} subject is associated with “${A[1]}”?`;ans=A[0];vals=pairs.map(x=>x[0])}
-   let wrong=[];for(let k=1;k<n&&wrong.length<3;k++){let v=vals[(i+k*7)%n];if(v!==ans&&!wrong.includes(v))wrong.push(v)}
-   // Variants may repeat the fact, but never change the correct answer for the same prompt.
-   if(wrong.length===3){let variant=Math.floor(seed/(n*2))+1,wording=variant>1?(q.replace(/\?$/,`? (Set ${variant})`)):q;rows.push([wording,ans,...wrong])}
+   let i=seed%n,A=pairs[i],reverseUnique=valueCounts.get(normFact(A[1]))===1,mode=seed%2,q,ans,vals;
+   if(mode===0||!reverseUnique){q=`Which description or association matches ${A[0]}?`;ans=A[1];vals=pairs.map(x=>x[1])}
+   else{q=`Which ${category} subject is uniquely associated with “${A[1]}”?`;ans=A[0];vals=pairs.map(x=>x[0])}
+   let wrong=[];for(let k=1;k<n&&wrong.length<3;k++){let v=vals[(i+k*7)%n];if(normFact(v)!==normFact(ans)&&!wrong.some(w=>normFact(w)===normFact(v)))wrong.push(v)}
+   // Never expose internal generator/set numbers to players.
+   if(wrong.length===3)rows.push([q,ans,...wrong]);
+   seed++;if(seed>200000)break;
+ }ing,ans,...wrong])}
    seed++;if(seed>200000)break;
  }
 }
 Object.entries(factPools).forEach(([category,pairs])=>expandFactPool(category,pairs,1000));
 
-const questions=categories.flatMap((category,c)=>raw[category].map((r,i)=>({id:`c${c}q${i}`,category,prompt:r[0],answer:r[1],options:r.slice(1)})));
+const questions=categories.flatMap((category,c)=>raw[category].filter(r=>!/\\(Set \\d+\\)/i.test(r[0])&&!/^Which of these is correctly paired/i.test(r[0])).map((r,i)=>({id:`c${c}q${i}`,category,prompt:r[0],answer:r[1],options:r.slice(1)})));
 const numeric=[
 ['How many bones are in a typical adult human skeleton?',206,'bones','Science'],['How many elements have atomic numbers from 1 to 118?',118,'elements','Science'],['In which year was the first Harry Potter novel published in the UK?',1997,'year','Harry Potter'],['How many players are on one Quidditch team on the pitch?',7,'players','Harry Potter'],['In which year did Manchester United win their 1999 treble?',1999,'year','Manchester United'],['In which year was Manchester United founded as Newton Heath?',1878,'year','Manchester United'],['How many Pokémon were in the original Generation I Pokédex?',151,'Pokémon','Pokémon'],['What is Pikachu’s National Pokédex number?',25,'number','Pokémon'],['How many members begin the Fellowship of the Ring?',9,'members','Lord of the Rings'],['How many rings were given to the dwarf-lords?',7,'rings','Lord of the Rings'],['How many seasons does the HBO Game of Thrones series have?',8,'seasons','Game of Thrones'],['How many dragons hatch for Daenerys at the end of season one?',3,'dragons','Game of Thrones'],['How many dwarfs are in Disney’s Snow White?',7,'dwarfs','Disney'],['In which year was Disney’s The Lion King first released?',1994,'year','Disney'],['How many hearts does an octopus have?',3,'hearts','Marine Biology'],['How many pairs of gill slits do most sharks have?',5,'pairs','Marine Biology'],['How many neck vertebrae does a typical domestic cat have?',7,'vertebrae','Cats'],['How many toes does a typical cat have across all four paws?',18,'toes','Cats'],['How many legs does a spider have?',8,'legs','Animals'],['How many chambers does a crocodile’s heart have?',4,'chambers','Animals'],['In which year was the first Toy Story film released?',1995,'year','Films'],['In which year was the original Jurassic Park released?',1993,'year','Films'],['How many seasons does the original Friends series have?',10,'seasons','TV Shows'],['How many seasons does Breaking Bad have?',5,'seasons','TV Shows'],['How many Infinity Stones are there in the MCU?',6,'stones','Marvel'],['In which year was the first MCU Iron Man film released?',2008,'year','Marvel'],['In which year did Batman first appear in Detective Comics #27?',1939,'year','DC'],['In which year did Superman first appear in Action Comics #1?',1938,'year','DC'],['In which year was the first Sonic the Hedgehog game released?',1991,'year','Video Games'],['How many squares are in a standard Tetris tetromino?',4,'squares','Video Games'],['How many minutes are in a day?',1440,'minutes','General Knowledge'],['How many squares are on a chessboard?',64,'squares','General Knowledge']
 ].map((r,i)=>({id:`n${i}`,prompt:r[0],value:r[1],unit:r[2],category:r[3]}));
