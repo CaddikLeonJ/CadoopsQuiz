@@ -82,10 +82,11 @@ function expandFactPool(category,pairs,target=1000){
  // Build factual base questions first.
  for(let ti=0;ti<templates.length;ti++)for(let i=0;i<n;i++){
    let [q,ans]=templates[ti](...pairs[i]);if(seen.has(q.toLowerCase()))continue;
-   let vals=pairs.map(x=>templates[ti](...x)[1]),wrong=[];for(let k=1;k<n&&wrong.length<3;k++){let v=vals[(i+k*7)%n];if(v!==ans&&!wrong.includes(v))wrong.push(v)}
-   if(wrong.length===3){rows // Deep-bank expansion: only generate questions whose wording uniquely determines one answer.
- // If several subjects share the same value (for example multiple LOTR characters are Hobbits),
- // never reverse that value into "which subject?" because it would have several correct answers.
+   let vals=pairs.map(x=>templates[ti](...x)[1]),wrong=[];
+   for(let k=1;k<n&&wrong.length<3;k++){let v=vals[(i+k*7)%n];if(normFact(v)!==normFact(ans)&&!wrong.some(w=>normFact(w)===normFact(v)))wrong.push(v)}
+   if(wrong.length===3){rows.push([q,ans,...wrong]);seen.add(q.toLowerCase())}
+ }
+ // Deep-bank expansion. Reverse associations are used only when their clue is unique.
  let valueCounts=new Map();pairs.forEach(x=>valueCounts.set(normFact(x[1]),(valueCounts.get(normFact(x[1]))||0)+1));
  let seed=0;
  while(rows.length<target){
@@ -93,10 +94,7 @@ function expandFactPool(category,pairs,target=1000){
    if(mode===0||!reverseUnique){q=`Which description or association matches ${A[0]}?`;ans=A[1];vals=pairs.map(x=>x[1])}
    else{q=`Which ${category} subject is uniquely associated with “${A[1]}”?`;ans=A[0];vals=pairs.map(x=>x[0])}
    let wrong=[];for(let k=1;k<n&&wrong.length<3;k++){let v=vals[(i+k*7)%n];if(normFact(v)!==normFact(ans)&&!wrong.some(w=>normFact(w)===normFact(v)))wrong.push(v)}
-   // Never expose internal generator/set numbers to players.
    if(wrong.length===3)rows.push([q,ans,...wrong]);
-   seed++;if(seed>200000)break;
- }ing,ans,...wrong])}
    seed++;if(seed>200000)break;
  }
 }
