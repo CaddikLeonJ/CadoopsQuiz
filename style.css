@@ -461,3 +461,17 @@ body.quiz-active .power .target-buttons{max-height:20dvh}
 /* Live introduction uses the same clean composition as the preview. */
 .player-intro{gap:10px!important;padding:20px!important;background:transparent!important}
 .player-intro h1,.intro-preview-content strong{font-size:clamp(28px,8vw,54px)!important;line-height:1!important;margin:6px 0 0!important;text-align:center!important}
+
+/* v81: one centred stage for every entrance/event presentation. */
+.intro-preview,.player-intro,.fastest-event,.buzzer-event{box-sizing:border-box!important}
+.intro-preview-content,.player-intro,.fastest-event-inner,.buzzer-event{align-items:center!important;justify-content:center!important;text-align:center!important}
+.intro-preview-content{position:absolute!important;inset:0!important;display:flex!important;flex-direction:column!important;gap:10px!important;padding:20px!important;box-sizing:border-box!important}
+.player-intro{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100dvh!important;display:flex!important;flex-direction:column!important;margin:0!important;transform:none!important}
+.player-intro>.avatar,.player-intro>h1,.intro-preview-content>.avatar,.intro-preview-content>strong{position:relative!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;align-self:center!important;flex:0 0 auto!important}
+.fastest-event{display:grid!important;place-items:center!important}
+.fastest-event-inner{display:flex!important;width:100%!important;height:100%!important;margin:0!important;box-sizing:border-box!important}
+.fastest-event .avatar,.buzzer-event .avatar{align-self:center!important;flex:0 0 auto!important}
+.fastest-event strong,.fastest-event span,.fastest-event small,.fastest-kicker,.buzzer-event strong,.buzzer-event span{width:100%!important;text-align:center!important;box-sizing:border-box!important}
+.buzzer-event{width:100%!important;margin:10px auto!important;display:flex!important;flex-direction:column!important}
+/* Effects fill the stage and never influence content alignment. */
+.intro-preview>.fx-layer,.player-intro>.fx-layer,.fastest-event>.fx-layer,.buzzer-event>.fx-layer{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important;transform:none!important;pointer-events:none!important}
