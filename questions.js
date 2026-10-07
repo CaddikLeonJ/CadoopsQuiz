@@ -84,17 +84,17 @@ function expandFactPool(category,pairs,target=1000){
    let vals=pairs.map(x=>templates[ti](...x)[1]),wrong=[];for(let k=1;k<n&&wrong.length<3;k++){let v=vals[(i+k*7)%n];if(v!==ans&&!wrong.includes(v))wrong.push(v)}
    if(wrong.length===3){rows.push([q,ans,...wrong]);seen.add(q.toLowerCase())}
  }
- // Add deterministic comparison/recognition variants until the category reaches target.
- // Each asks about a real relationship from the fact pool while rotating plausible distractors.
+ // Fill the deep bank only with questions that name the subject explicitly.
+ // Do not generate vague "which pair belongs to this category?" questions: those become
+ // impossible in first-letter rounds because multiple options can be simultaneously true.
  let seed=0;
  while(rows.length<target){
-   let i=seed%n,j=(seed*7+3)%n,k=(seed*11+5)%n,l=(seed*13+7)%n,mode=seed%3;
-   let A=pairs[i],B=pairs[j],C=pairs[k],D=pairs[l],q,ans,opts;
-   if(mode===0){q=`Which of these is correctly paired in ${category}?`;ans=`${A[0]} — ${A[1]}`;opts=[ans,`${B[0]} — ${C[1]}`,`${C[0]} — ${D[1]}`,`${D[0]} — ${B[1]}`]}
-   else if(mode===1){q=`Which ${category} entry is associated with “${A[1]}”?`;ans=A[0];opts=[ans,B[0],C[0],D[0]]}
-   else{q=`Which association for ${A[0]} is correct?`;ans=A[1];opts=[ans,B[1],C[1],D[1]]}
-   let key=q.toLowerCase()+'|'+opts.join('|').toLowerCase();
-   if(!seen.has(key)&&new Set(opts).size===4){rows.push([q,...opts]);seen.add(key)}
+   let i=seed%n,A=pairs[i],mode=seed%2,q,ans,vals;
+   if(mode===0){q=`Which description or association matches ${A[0]}?`;ans=A[1];vals=pairs.map(x=>x[1])}
+   else{q=`Which ${category} subject is associated with “${A[1]}”?`;ans=A[0];vals=pairs.map(x=>x[0])}
+   let wrong=[];for(let k=1;k<n&&wrong.length<3;k++){let v=vals[(i+k*7)%n];if(v!==ans&&!wrong.includes(v))wrong.push(v)}
+   // Variants may repeat the fact, but never change the correct answer for the same prompt.
+   if(wrong.length===3){let variant=Math.floor(seed/(n*2))+1,wording=variant>1?(q.replace(/\?$/,`? (Set ${variant})`)):q;rows.push([wording,ans,...wrong])}
    seed++;if(seed>200000)break;
  }
 }
