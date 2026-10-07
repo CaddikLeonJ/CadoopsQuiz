@@ -369,7 +369,7 @@ Object.entries(root.CadoopsResearchBanks||{}).forEach(([category,rows])=>{
   if(!raw[category]) raw[category]=[];
   raw[category].push(...rows);
 });
-const questions=categories.flatMap((category,c)=>{let seen=new Set();return raw[category].filter(r=>{let k=String(r[0]).trim().toLowerCase();if(seen.has(k))return false;seen.add(k);return true}).map((r,i)=>({id:'c'+c+'q'+i,category,prompt:r[0],answer:r[1],options:r.slice(1)}))});
+const questions=categories.flatMap((category,c)=>{let seen=new Set();return raw[category].filter(r=>Array.isArray(r)&&r.length===5&&r.every(v=>String(v).trim().length>0)&&new Set(r.slice(1).map(v=>String(v).trim().toLowerCase())).size===4).filter(r=>{let k=String(r[0]).trim().toLowerCase();if(seen.has(k))return false;seen.add(k);return true}).map((r,i)=>({id:'c'+c+'q'+i,category,prompt:r[0],answer:r[1],options:r.slice(1)}))});
 const starWarsNumeric=[
 ['In what year was the original Star Wars film released?',1977,'year','Star Wars'],
 ['How many films are in the numbered Skywalker Saga?',9,'films','Star Wars'],
