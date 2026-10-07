@@ -402,7 +402,7 @@ raw['Friends'].push(...[
 ]);
 const rejectStandardPrompt=p=>/^How many distinct main-character plotline groupings are recorded for Friends\b/i.test(String(p||''));
 const cleanPrompt=p=>{p=String(p||'').trim();
-  p=p.replace(/^Which of these main-character combinations shares a recorded plotline in Friends /i,'Which of these character groups shares a storyline in Friends ');
+  p=p.replace(/^Which of these main-character combinations shares (?:a recorded plotline|a storyline) in Friends /i,'Which of these character groups shares a storyline in Friends ');
   p=p.replace(/^According to The Cat API breed profile,\s*/i,'');
   p=p.replace(/^On The Cat API's 1–5 breed scale,\s*/i,'On a 1–5 breed-trait scale, ');
   p=p.replace(/^What runtime does the LOTR API list for "([^"]+)"\?$/i,'What is the runtime of "$1"?');
