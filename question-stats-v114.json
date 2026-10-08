@@ -1,0 +1,30 @@
+{
+  "version": "v114",
+  "generated_at": "2026-10-08",
+  "total_unique_standard_questions": 22457,
+  "categories": {
+    "General Knowledge": 1006,
+    "Lord of the Rings": 1669,
+    "Game of Thrones": 1063,
+    "Disney": 1020,
+    "Video Games": 507,
+    "Science": 524,
+    "Harry Potter": 1179,
+    "Manchester United": 1530,
+    "Marvel": 1538,
+    "DC": 1329,
+    "Pokémon": 539,
+    "Marine Biology": 687,
+    "Cats": 521,
+    "Animals": 509,
+    "Films": 551,
+    "TV Shows": 556,
+    "Stranger Things": 1371,
+    "Big Bang Theory": 842,
+    "Friends": 501,
+    "House of the Dragon": 3199,
+    "The Walking Dead": 831,
+    "Star Wars": 985
+  },
+  "audit": "v114 pre-play verification: restored Clue Me In, Who Am I? and Connections using the verified trivia pool; all 20 modes have playable planner paths; 500 random planning trials passed; standard-question totals unchanged from v113."
+}
