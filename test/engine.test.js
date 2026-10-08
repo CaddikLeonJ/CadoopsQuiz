@@ -7,7 +7,7 @@ const {Game,plan,modes}=require('../engine.js');
 const D=require('../questions.js');
 
 const config=(mode='classic',count=1)=>({auto:false,categories:D.categories,capacity:100,rounds:[{mode,count,category:'Mixed'}]});
-function game(mode,count=1,n=2){let g=new Game(config(mode,count),'ABCDEF',1000),p=Array.from({length:n},(_,i)=>g.join({name:'Player '+i},1000));g.start(1000);return{g,p}}
+function game(mode,count=1,n=2){let g=new Game(config(mode,count),'ABCDEF',1000),p=Array.from({length:n},(_,i)=>g.join({name:'Player '+i},1000)),now=1000;g.start(now);let guard=0;while(g.phase!=='question'&&guard++<20){if(g.phase==='roundIntro'){g.host(g.hostToken,{action:'startRound'},now+1);now+=1}else if(g.deadline){now=g.deadline;g.tick(now)}else throw new Error('Game stalled in '+g.phase)}assert.equal(g.phase,'question');g.deadline=1000+(mode==='final'?8000:['chaos','closest','music'].includes(mode)?20000:10000);return{g,p}}
 
 test('all 22 categories have large valid standard-question pools',()=>{
   assert.equal(D.categories.length,22);
