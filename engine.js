@@ -16,7 +16,7 @@ let rounds=config.rounds;
 const sourceFamily=m=>['higher','closest'].includes(m)?'numeric':m==='quote'?'quote':['picture','music'].includes(m)?m:'trivia';
 if(config.play==='random'){
 let wanted=clamp(config.roundCount,1,12,5),count=clamp(config.perRound,1,10,3);
-let remaining={trivia:D.questions.filter(q=>cats.includes(q.category)).length,numeric:D.numeric.filter(q=>cats.includes(q.category)).length,quote:D.quotes.filter(q=>cats.includes(q.category)&&!q.generatedClue).length,clue:D.quotes.filter(q=>cats.includes(q.category)&&q.generatedClue).length,picture:[...D.pictures,...pics].filter(q=>cats.includes(q.category)).length,music:songs.filter(q=>cats.includes(q.category)).length};
+let remaining={trivia:D.questions.filter(q=>cats.includes(q.category)).length,numeric:D.numeric.filter(q=>cats.includes(q.category)).length,quote:D.quotes.filter(q=>cats.includes(q.category)).length,picture:[...D.pictures,...pics].filter(q=>cats.includes(q.category)).length,music:songs.filter(q=>cats.includes(q.category)).length};
 let starter=['classic','picture','quote','clue','whoami','connections','roulette'],middle=['classic','picture','quote','clue','whoami','connections','headtohead','elimination','roulette','buzzer','music','steal','toxic','bingo','higher','bet','chasedown'],endgame=['closest','chaos','buzzer','bet'],usedModes=new Set();
 function poolFor(pos){if(wanted===1)return ['final','closest','chaos','classic'];if(pos===wanted-1)return ['final',...endgame];let starterSlots=Math.max(1,Math.floor(wanted*.2)),endSlots=Math.max(1,Math.floor(wanted*.2));if(pos<starterSlots)return starter;if(pos>=wanted-endSlots)return endgame;return middle}
 function choose(pos,picked,left){if(pos===wanted)return picked;for(let mode of shuffle(poolFor(pos).filter(m=>modes[m]&&!usedModes.has(m)))){let n=mode==='bingo'?9:count,f=sourceFamily(mode);if(left[f]<n)continue;if(mode==='bingo'&&new Set(D.questions.filter(q=>cats.includes(q.category)).map(q=>norm(q.answer))).size<9)continue;usedModes.add(mode);let found=choose(pos+1,[...picked,{mode,count:n,category:'Mixed'}],{...left,[f]:left[f]-n});if(found)return found;usedModes.delete(mode)}return null}
@@ -27,7 +27,7 @@ assert(Array.isArray(rounds)&&rounds.length>=1&&rounds.length<=20,'Choose betwee
 const used=new Set();let output=[];
 rounds.forEach((r,ri)=>{assert(modes[r.mode],'Unknown round type.');let selected=r.mode==='roulette'?cats:(r.category&&r.category!=='Mixed'?[r.category]:cats);assert(selected.every(c=>cats.includes(c)),'Round category must be selected in the quiz categories.');let pool;
 if(['higher','closest'].includes(r.mode))pool=D.numeric;
-else if(r.mode==='quote')pool=D.quotes.filter(q=>!q.generatedClue);
+else if(r.mode==='quote')pool=D.quotes;
 else if(['clue','whoami','connections'].includes(r.mode))pool=D.questions;
 else if(r.mode==='picture')pool=[...D.pictures,...pics];
 else if(r.mode==='music')pool=songs;
