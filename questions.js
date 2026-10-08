@@ -55,7 +55,7 @@ Object.entries({
 'Game of Thrones':[
 ['What is the motto of House Stark?','Winter is Coming','Fire and Blood','Hear Me Roar!','Ours is the Fury'],
 ['Which Stark child becomes the Three-Eyed Raven?','Bran Stark','Robb Stark','Arya Stark','Rickon Stark'],
-['What is Jon Snow’s direwolf called?','Ghost','Grey Wind','Nymeria','Summer'],
+
 ['Which castle serves as the headquarters of the Night’s Watch?','Castle Black','Winterfell','The Red Keep','The Eyrie']
 ],
 'Disney':[
