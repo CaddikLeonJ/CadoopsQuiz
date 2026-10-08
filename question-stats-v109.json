@@ -1,0 +1,30 @@
+{
+  "version": "v109",
+  "generated_at": "2026-10-08",
+  "total_unique_standard_questions": 22465,
+  "categories": {
+    "General Knowledge": 1006,
+    "Lord of the Rings": 1669,
+    "Game of Thrones": 1064,
+    "Disney": 1020,
+    "Video Games": 507,
+    "Science": 524,
+    "Harry Potter": 1179,
+    "Manchester United": 1530,
+    "Marvel": 1539,
+    "DC": 1329,
+    "Pokémon": 539,
+    "Marine Biology": 687,
+    "Cats": 521,
+    "Animals": 510,
+    "Films": 551,
+    "TV Shows": 556,
+    "Stranger Things": 1372,
+    "Big Bang Theory": 842,
+    "Friends": 505,
+    "House of the Dragon": 3199,
+    "The Walking Dead": 831,
+    "Star Wars": 985
+  },
+  "audit": "v109 pre-play sweep: all 20 modes runtime-checked; random/custom specialist planning fixed; clue/Who Am I?/Connections made playable; 22-category setup toggle and 12-round limit fixed; raw Harry Potter and Star Wars duplicate bank entries removed."
+}
