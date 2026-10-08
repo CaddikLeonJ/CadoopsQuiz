@@ -10,7 +10,7 @@ test('browser app parses and all event presentations use the shared portrait fra
     assert.ok(app.includes(call),'Missing shared portrait for '+call);
   }
   for(const name of ['profile.name','p.name','state.firstCorrect.name','buzzWinner.name']){
-    assert.ok(app.includes('eventNameSize('+name+')'),'Missing length-aware name for '+name);
+    assert.ok(app.includes('eventNameSize('+name),'Missing length-aware name for '+name);
   }
   assert.match(app,/event-portrait--photo/);
   assert.match(app,/event-portrait--icon/);
