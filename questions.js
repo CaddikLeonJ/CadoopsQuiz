@@ -371,13 +371,10 @@ Object.entries(root.CadoopsResearchBanks||{}).forEach(([category,rows])=>{
 });
 // v104: replace the ambiguous Friends "plotline grouping count" filler with normal, playable trivia.
 raw['Friends'].push(...[
-["What is Ross's pet monkey called?","Marcel","Maurice","Milo","Max"],
 ["What song is Phoebe best known for performing at Central Perk?","Smelly Cat","Sticky Shoes","Little Black Curly Hair","Two of Them Kissed Last Night"],
-["What is Joey's soap-opera character called?","Dr. Drake Ramoray","Dr. Richard Burke","Dr. Leonard Green","Dr. Roger"],
 ["What is Phoebe's twin sister called?","Ursula Buffay","Amy Green","Jill Green","Alice Knight"],
 ["Who does Phoebe marry?","Mike Hannigan","David","Gary","Duncan"],
 ["What is Ross and Rachel's daughter called?","Emma","Erica","Emily","Ella"],
-["What is Ross's son called?","Ben","Jack","Frank","Owen"],
 ["What is Monica's profession?","Chef","Fashion buyer","Masseuse","Paleontologist"],
 ["Which fashion company does Rachel work for later in the series?","Ralph Lauren","Gucci","Macy's","Versace"],
 ["What is Chandler's middle name?","Muriel","Michael","Matthew","Maurice"],
@@ -396,7 +393,6 @@ raw['Friends'].push(...[
 ["Which friend works as a masseuse?","Phoebe","Rachel","Monica","Janice"],
 ["In which city do Monica and Chandler first sleep together?","London","Las Vegas","New York","Barbados"],
 ["Who gives birth to triplets for Frank Jr. and Alice?","Phoebe","Monica","Rachel","Carol"],
-["What are Monica and Chandler's adopted twins called?","Jack and Erica","Ben and Emma","Frank and Alice","Judy and Jack"],
 ["Which recurring character is famous for saying 'Oh. My. God.'?","Janice","Kathy","Julie","Charlie"],
 ["What do the six friends leave on Monica's counter in the final scene?","Their keys","Coffee mugs","Photo frames","Wedding rings"]
 ]);
