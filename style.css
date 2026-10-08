@@ -479,3 +479,123 @@ body.quiz-active .power .target-buttons{max-height:20dvh}
 /* v83: photographic solo/player portraits are always square in every event surface. */
 .player-intro .team-photo,.intro-preview .team-photo,.fastest-event .team-photo,.buzzer-event .team-photo,.celebration .team-photo{border-radius:0!important;clip-path:none!important;overflow:hidden!important}
 .player-intro .team-photo img,.intro-preview .team-photo img,.fastest-event .team-photo img,.buzzer-event .team-photo img,.celebration .team-photo img{border-radius:0!important;clip-path:none!important;width:100%!important;height:100%!important;object-fit:cover!important}
+
+/* v117: unified event identity layout — applies equally to people, bots and previews.
+   The portrait and its frame are one measured square; no offset decorative box. */
+.intro-preview,.player-intro,.fastest-event,.buzzer-event{
+  --event-photo-size:clamp(112px,min(32vw,23dvh),176px);
+  --event-name-size:clamp(20px,5.4vw,34px);
+  --event-name-width:min(90vw,680px);
+}
+.intro-preview-content,.player-intro,.fastest-event-inner,body.quiz-active .buzzer-event{
+  display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:center!important;
+  text-align:center!important;min-width:0!important;
+  gap:clamp(6px,1.3dvh,12px)!important;
+}
+.event-portrait{
+  position:relative!important;isolation:isolate;
+  display:grid!important;place-items:center!important;
+  width:var(--event-photo-size)!important;
+  height:var(--event-photo-size)!important;
+  min-width:var(--event-photo-size)!important;
+  min-height:var(--event-photo-size)!important;
+  flex:0 0 var(--event-photo-size)!important;
+  margin:0 auto!important;
+  padding:0!important;
+  line-height:1;
+  box-sizing:border-box!important;
+  z-index:6;
+}
+.event-portrait--photo{border-radius:0!important}
+.event-portrait--icon{border-radius:50%!important}
+/* The decorative stroke shares the exact edges of the portrait, rather than
+   drawing a separate larger box around it. */
+.event-portrait::after{
+  content:"";position:absolute;inset:0;z-index:3;
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:inherit;pointer-events:none;
+  box-shadow:0 0 24px rgba(255,198,99,.20);
+}
+.intro-preview .event-portrait .avatar.big,
+.player-intro .event-portrait .avatar.big,
+.fastest-event .event-portrait .avatar.big,
+body.quiz-active .buzzer-event .event-portrait .avatar.big{
+  position:relative!important;inset:auto!important;
+  transform-origin:center center!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;height:100%!important;
+  min-width:0!important;min-height:0!important;
+  aspect-ratio:1/1!important;flex:0 0 auto!important;
+  margin:0!important;padding:0!important;
+  border:4px solid var(--gold)!important;
+  box-sizing:border-box!important;
+  border-radius:inherit!important;
+  box-shadow:0 0 30px rgba(255,198,99,.20)!important;
+}
+.event-portrait--photo .avatar.big,.event-portrait--photo .avatar.big img{border-radius:0!important}
+.event-portrait--icon .avatar.big{border-radius:50%!important}
+.event-portrait .avatar.big img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
+/* Smaller balanced typography keeps the identity visually attached to the picture. */
+.intro-preview .event-name,.player-intro .event-name,
+.fastest-event .event-name,body.quiz-active .buzzer-event .event-name{
+  display:block!important;position:relative!important;
+  width:100%!important;max-width:var(--event-name-width)!important;
+  min-width:0!important;margin:0 auto!important;padding:0 3px!important;
+  box-sizing:border-box!important;
+  font-family:'Space Grotesk',system-ui,sans-serif!important;
+  font-size:var(--event-name-size)!important;font-weight:800!important;
+  line-height:1.12!important;letter-spacing:-.02em!important;
+  text-transform:none!important;text-align:center!important;
+  overflow-wrap:anywhere!important;word-break:normal!important;
+  text-wrap:balance;color:#fff!important;
+  -webkit-text-stroke:1px rgba(5,8,16,.84)!important;
+  text-shadow:0 2px 11px rgba(0,0,0,.9),0 0 20px rgba(0,0,0,.60)!important;
+}
+.intro-preview .event-name--medium,.player-intro .event-name--medium,
+.fastest-event .event-name--medium,body.quiz-active .buzzer-event .event-name--medium{
+  font-size:calc(var(--event-name-size)*.83)!important;
+}
+.intro-preview .event-name--long,.player-intro .event-name--long,
+.fastest-event .event-name--long,body.quiz-active .buzzer-event .event-name--long{
+  font-size:calc(var(--event-name-size)*.69)!important;
+}
+.player-intro{padding:clamp(16px,4vw,32px)!important;gap:clamp(7px,1.4dvh,14px)!important}
+.player-intro>.event-portrait,.intro-preview-content>.event-portrait{
+  align-self:center!important;left:auto!important;top:auto!important;
+  right:auto!important;bottom:auto!important;
+}
+.player-intro>.event-name{align-self:center!important;transform:none!important}
+.intro-preview-content{padding:14px 18px!important;gap:8px!important}
+.intro-preview{--event-photo-size:clamp(102px,25vw,124px);--event-name-size:clamp(17px,4vw,24px);--event-name-width:min(90%,520px);min-height:220px}
+.fastest-event{
+  --event-photo-size:clamp(90px,min(34vw,19dvh),140px);
+  --event-name-size:clamp(19px,5vw,29px);
+  --event-name-width:min(92%,540px);
+}
+.fastest-event-inner{
+  min-height:0!important;max-height:100%!important;
+  padding:clamp(10px,2.8vw,20px)!important;
+  gap:clamp(5px,1dvh,10px)!important;
+  overflow:hidden;
+}
+.fastest-event-inner .fastest-kicker{font-size:clamp(12px,2.8vw,18px)!important;line-height:1.18!important;letter-spacing:.07em!important;max-width:100%!important}
+.fastest-event-inner>span{font-size:clamp(10px,2.3vw,14px)!important;line-height:1.2!important;letter-spacing:.045em!important;margin:0!important}
+.fastest-event-inner>small{font-size:clamp(10px,2.3vw,13px)!important;line-height:1.2!important;letter-spacing:.04em!important;margin:0!important}
+body.quiz-active .buzzer-event{
+  --event-photo-size:clamp(90px,min(33vw,20dvh),144px);
+  --event-name-size:clamp(19px,5vw,29px);
+  --event-name-width:min(92%,540px);
+  gap:clamp(6px,1.1dvh,12px)!important;
+  padding:clamp(12px,3vw,24px)!important;
+}
+body.quiz-active .buzzer-event>.fastest-kicker{font-size:clamp(13px,3vw,19px)!important;letter-spacing:.075em!important;line-height:1.2!important}
+body.quiz-active .buzzer-event>span{font-size:clamp(11px,2.5vw,15px)!important;line-height:1.25!important;letter-spacing:.06em!important}
+@media(max-height:600px){
+  .player-intro{--event-photo-size:clamp(88px,19dvh,122px);--event-name-size:clamp(18px,4vw,29px)}
+  .fastest-event,.buzzer-event{--event-photo-size:clamp(68px,16dvh,104px);--event-name-size:clamp(16px,4vw,23px)}
+  .fastest-event-inner{gap:4px!important;padding:8px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .player-intro .event-name,.intro-preview .event-name{animation:none!important}
+}
