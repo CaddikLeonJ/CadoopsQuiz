@@ -19,6 +19,7 @@ The GitHub Pages version works as a solo demo immediately. Live rooms need the N
 - Solo demo with simulated opponents and local resume. It uses the same scoring engine as the multiplayer server.
 - v115 stability fixes: quiz planning no longer substitutes duplicate questions across rounds, and Name That Tune requires a correct song title before awarding the optional artist bonus. Automated GitHub Actions tests run on every push.
 - v116 live music fixes: built-in player entrance and fastest-answer themes now load from the multiplayer server, including the byte-range responses expected by mobile browsers. The HTTP test now waits through real introduction and countdown phases.
+- v117 entrance polish: all 50 intro FX, the profile preview, fastest-correct events, and buzzer celebration use the same centred profile-photo frame and smaller, balanced name sizes that work with long player and bot names. Added static layout regression checks.
 
 ## Deploy multiplayer on Render
 
