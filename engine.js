@@ -19,7 +19,7 @@ let wanted=clamp(config.roundCount,1,12,5),count=clamp(config.perRound,1,10,3);
 let remaining={trivia:D.questions.filter(q=>cats.includes(q.category)).length,numeric:D.numeric.filter(q=>cats.includes(q.category)).length,quote:D.quotes.filter(q=>cats.includes(q.category)&&!q.generatedClue).length,clue:D.quotes.filter(q=>cats.includes(q.category)&&q.generatedClue).length,picture:[...D.pictures,...pics].filter(q=>cats.includes(q.category)).length,music:songs.filter(q=>cats.includes(q.category)).length};
 let starter=['classic','picture','quote','clue','whoami','connections','roulette'],middle=['classic','picture','quote','clue','whoami','connections','headtohead','elimination','roulette','buzzer','music','steal','toxic','bingo','higher','bet','chasedown'],endgame=['closest','chaos','buzzer','bet'],usedModes=new Set();
 function poolFor(pos){if(wanted===1)return ['final','closest','chaos','classic'];if(pos===wanted-1)return ['final',...endgame];let starterSlots=Math.max(1,Math.floor(wanted*.2)),endSlots=Math.max(1,Math.floor(wanted*.2));if(pos<starterSlots)return starter;if(pos>=wanted-endSlots)return endgame;return middle}
-function choose(pos,picked,left){if(pos===wanted)return picked;for(let mode of shuffle(poolFor(pos).filter(m=>modes[m]&&!usedModes.has(m)))){let n=mode==='bingo'?8:count,f=sourceFamily(mode);if(left[f]<n)continue;if(mode==='bingo'&&new Set(D.questions.filter(q=>cats.includes(q.category)).map(q=>norm(q.answer))).size<9)continue;usedModes.add(mode);let found=choose(pos+1,[...picked,{mode,count:n,category:'Mixed'}],{...left,[f]:left[f]-n});if(found)return found;usedModes.delete(mode)}return null}
+function choose(pos,picked,left){if(pos===wanted)return picked;for(let mode of shuffle(poolFor(pos).filter(m=>modes[m]&&!usedModes.has(m)))){let n=mode==='bingo'?9:count,f=sourceFamily(mode);if(left[f]<n)continue;if(mode==='bingo'&&new Set(D.questions.filter(q=>cats.includes(q.category)).map(q=>norm(q.answer))).size<9)continue;usedModes.add(mode);let found=choose(pos+1,[...picked,{mode,count:n,category:'Mixed'}],{...left,[f]:left[f]-n});if(found)return found;usedModes.delete(mode)}return null}
 rounds=choose(0,[],remaining);
 assert(rounds,`There aren’t enough unused questions for ${wanted} rounds with these categories and question counts. Choose fewer rounds/questions, more categories, or add media.`);
 } 
@@ -34,7 +34,7 @@ else if(r.mode==='music')pool=songs;
 else pool=D.questions;
 pool=shuffle(pool.filter(q=>selected.includes(q.category)&&!used.has(`${sourceFamily(r.mode)}:${q.id}`)));
 if(r.mode==='bingo')pool=pool.filter((q,i,arr)=>arr.findIndex(x=>norm(x.answer)===norm(q.answer))===i);
-const count=r.mode==='bingo'?8:clamp(r.count,1,20,3);
+const count=r.mode==='bingo'?9:clamp(r.count,1,20,3);
 const needed=r.mode==='bingo'?9:count;
 assert(pool.length>=needed,`${modes[r.mode].name}: only ${pool.length} unused questions/clips in the selected categories; choose fewer questions, different categories, or add media.`);
 let chosen=pool.slice(0,count);let card=(r.mode==='bingo'?pool.slice(0,9):chosen).map(q=>q.answer);
