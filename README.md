@@ -23,6 +23,8 @@ The GitHub Pages version works as a solo demo immediately. Live rooms need the N
 
 - v118 adds **The Ting Tong Song** as a built-in entrance / fastest-answer theme for real and solo-simulated players, including playback previews, multiplayer MP3 streaming and exclusive theme claims.
 
+- v119 alphabetical theme sorting: built-in song theme lists now ignore the leading word **“The”** for sorting while keeping the full displayed title (e.g. “The Ting Tong Song” sorts under T for “Ting”).
+
 ## Deploy multiplayer on Render
 
 1. Sign in to https://dashboard.render.com/ using GitHub.
