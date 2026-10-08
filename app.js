@@ -2,7 +2,7 @@
 const $=s=>document.querySelector(s),app=$('#app'),D=QuizData,E=QuizEngine;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const avatars=['🐼','🦊','🐱','🐸','🦉','🐙','🐲','🦄','🤖','👾','🐧','🦁'];
-const icons=['🌍','💍','🐉','🏰','🎮','🔬','⚡','⚽','🦸','🦇','🔴','🐠','🐈','🦒','🎬','📺'];
+const icons=['🌍','💍','🐉','🏰','🎮','🔬','⚡','⚽','🦸','🦇','🔴','🐠','🐈','🦒','🎬','📺','👾','💥','☕','🐲','🧟','⭐'];
 const storage={get(k,d){try{return JSON.parse(localStorage.getItem('cadoops-'+k))??d}catch{return d}},set(k,v){try{localStorage.setItem('cadoops-'+k,JSON.stringify(v))}catch{}}};
 let fastestEventKey='',fastestEventUntil=0,fastestEventTimer=null,buzzerEventKey='',buzzerEventPlaying=false,bgmTimer=null,bgmNodes=[],bgmGain=null,introIndex=-1,introUntil=0,introKey='';let answerSending=false,soloRoster=[],photoCrop=null,keypadMode='letters';let profile=storage.get('profile',{name:'',avatar:0,photo:'',theme:'',themePreset:'preset:1',introEffect:'fx1'}),prefs=storage.get('prefs',{voice:false,voiceName:'',volume:.85,muted:false,effects:true,motion:false,bgm:'tranquil',bgmVolume:.22}),session=storage.get('session',null),state=null,local=null,page='home',busy=false,offset=0,lastSpoken='',lastSaved='',polling=false,networkFails=0,botTimer=0;
 if(!profile.claimId){profile.claimId=(crypto.randomUUID?crypto.randomUUID():'p-'+Date.now()+'-'+Math.random().toString(36).slice(2));storage.set('profile',profile)}
