@@ -42,7 +42,7 @@ Object.entries({"General Knowledge":[["What is the capital of Canada?","Ottawa",
 Object.entries({
 'General Knowledge':[
 ['Which country has Ottawa as its capital?','Canada','Australia','New Zealand','United States'],
-['What is the capital city of New Zealand?','Wellington','Auckland','Christchurch','Hamilton'],
+['Who sculpted "The Thinker"?','Auguste Rodin','Michelangelo','Donatello','Gian Lorenzo Bernini'],
 ['Which element has the chemical symbol Fe?','Iron','Fluorine','Francium','Fermium'],
 ['Which continent contains the Sahara Desert?','Africa','Asia','South America','Australia']
 ],
