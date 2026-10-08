@@ -5,7 +5,7 @@ for(const name of fs.readdirSync(bankDir).filter(name=>name.endsWith('.js')).sor
 const {Game}=require('./engine.js');
 const rooms=new Map(),rates=new Map(),themeClaims=new Map();const root=__dirname;
 const builtInTheme=id=>/^(?:real:(?:ace|finalfantasy|spongebob)|preset:(?:[1-9]|[1-9][0-9]|1[01][0-9]|120))$/.test(String(id||''));
-const files=new Set(['index.html','app.js','style.css','config.js','questions.js','engine.js','icon.svg',...fs.readdirSync(bankDir).filter(name=>name.endsWith('.js')).map(name=>'banks/'+name)]);
+const files=new Set(['index.html','app.js','style.css','config.js','questions.js','engine.js','icon.svg','Cadoops Quiz Ace Ventura Alrighty Then Scream.mp3','Cadoops Quiz Final Fantasy Fanfare.mp3','Cadoops Quiz SpongeBob - Sweet Victory.mp3',...fs.readdirSync(bankDir).filter(name=>name.endsWith('.js')).map(name=>'banks/'+name)]);
 function json(res,status,data){res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify(data))}
 function code(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';return Array.from({length:6},()=>chars[crypto.getRandomValues(new Uint8Array(1))[0]%chars.length]).join('')}
 const server=http.createServer(async(req,res)=>{
@@ -13,7 +13,34 @@ res.setHeader('Access-Control-Allow-Origin','*');res.setHeader('Access-Control-A
 if(req.method==='OPTIONS'){res.writeHead(204);return res.end()}
 let url=new URL(req.url,'http://localhost');if(url.pathname==='/api/health')return json(res,200,{ok:true,version:'1.0.0'});
 if(url.pathname==='/api/theme-claims'&&req.method==='GET'){let owner=String(url.searchParams.get('owner')||'');return json(res,200,{claims:[...themeClaims.entries()].map(([themeId,v])=>({themeId,name:v.name,mine:v.owner===owner}))})}
-if(!url.pathname.startsWith('/api/')){let name=url.pathname==='/'?'index.html':url.pathname.slice(1);if(!files.has(name))return json(res,404,{error:'Not found'});res.setHeader('Content-Type',({html:'text/html',js:'text/javascript',css:'text/css',svg:'image/svg+xml'})[name.split('.').pop()]);res.setHeader('Cache-Control','no-cache');return fs.createReadStream(path.join(root,name)).pipe(res)}
+if(!url.pathname.startsWith('/api/')){
+  let name;
+  try{name=url.pathname==='/'?'index.html':decodeURIComponent(url.pathname.slice(1))}
+  catch{return json(res,400,{error:'Invalid URL path'})}
+  if(!files.has(name))return json(res,404,{error:'Not found'});
+  const asset=path.join(root,name),ext=name.split('.').pop();
+  res.setHeader('Content-Type',({html:'text/html',js:'text/javascript',css:'text/css',svg:'image/svg+xml',mp3:'audio/mpeg'})[ext]||'application/octet-stream');
+  res.setHeader('Cache-Control','no-cache');
+  if(ext==='mp3'){
+    const size=fs.statSync(asset).size;
+    res.setHeader('Accept-Ranges','bytes');
+    const match=/^bytes=(\d*)-(\d*)$/.exec(req.headers.range||'');
+    if(match){
+      let start=match[1]?Number(match[1]):0;
+      let end=match[2]?Number(match[2]):size-1;
+      if(!match[1]&&match[2]){start=Math.max(0,size-Number(match[2]));end=size-1}
+      if(!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start<0||start>=size||end<start){
+        res.writeHead(416,{'Content-Range':'bytes */'+size});
+        return res.end();
+      }
+      end=Math.min(end,size-1);
+      res.writeHead(206,{'Content-Range':'bytes '+start+'-'+end+'/'+size,'Content-Length':end-start+1});
+      return fs.createReadStream(asset,{start,end}).pipe(res);
+    }
+    res.setHeader('Content-Length',size);
+  }
+  return fs.createReadStream(asset).pipe(res);
+}
 try{
 let data={};if(req.method==='POST'){let chunks=[],size=0;for await(let chunk of req){size+=chunk.length;if(size>16*1024*1024)throw new Error('Quiz media is too large. Keep total uploads below 16 MB.');chunks.push(chunk)}data=JSON.parse(Buffer.concat(chunks).toString()||'{}')}
 let token=(req.headers.authorization||'').replace(/^Bearer /,'');
