@@ -4,8 +4,8 @@ const bankDir=path.join(__dirname,'banks');
 for(const name of fs.readdirSync(bankDir).filter(name=>name.endsWith('.js')).sort())require(path.join(bankDir,name));
 const {Game}=require('./engine.js');
 const rooms=new Map(),rates=new Map(),themeClaims=new Map();const root=__dirname;
-const builtInTheme=id=>/^(?:real:(?:ace|finalfantasy|spongebob)|preset:(?:[1-9]|[1-9][0-9]|1[01][0-9]|120))$/.test(String(id||''));
-const files=new Set(['index.html','app.js','style.css','config.js','questions.js','engine.js','icon.svg','Cadoops Quiz Ace Ventura Alrighty Then Scream.mp3','Cadoops Quiz Final Fantasy Fanfare.mp3','Cadoops Quiz SpongeBob - Sweet Victory.mp3',...fs.readdirSync(bankDir).filter(name=>name.endsWith('.js')).map(name=>'banks/'+name)]);
+const builtInTheme=id=>/^(?:real:(?:ace|finalfantasy|spongebob|tingtong)|preset:(?:[1-9]|[1-9][0-9]|1[01][0-9]|120))$/.test(String(id||''));
+const files=new Set(['index.html','app.js','style.css','config.js','questions.js','engine.js','icon.svg','Cadoops Quiz Ace Ventura Alrighty Then Scream.mp3','Cadoops Quiz Final Fantasy Fanfare.mp3','Cadoops Quiz SpongeBob - Sweet Victory.mp3','Cadoops Quiz The Ting Tong Song.mp3',...fs.readdirSync(bankDir).filter(name=>name.endsWith('.js')).map(name=>'banks/'+name)]);
 function json(res,status,data){res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify(data))}
 function code(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';return Array.from({length:6},()=>chars[crypto.getRandomValues(new Uint8Array(1))[0]%chars.length]).join('')}
 const server=http.createServer(async(req,res)=>{
