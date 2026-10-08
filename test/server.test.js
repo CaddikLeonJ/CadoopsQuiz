@@ -6,3 +6,18 @@ test('two phones and a TV share room state while answers remain private',async()
 test('multiplayer server loads the full research banks',async()=>{let room=await req('/api/rooms',{capacity:4,auto:false,categories:['House of the Dragon'],rounds:[{mode:'classic',count:20},{mode:'toxic',count:20}]});assert.equal(room.status,201);assert.equal(room.body.state.total,40)});
 test('server can serve bank scripts referenced by its own homepage',async()=>{assert.equal((await fetch(base+'/banks/general-knowledge.js')).status,200)});
 test('health and static homepage are served; source server file is private',async()=>{let health=await req('/api/health');assert.equal(health.body.ok,true);assert.equal((await fetch(base+'/')).status,200);assert.equal((await fetch(base+'/server.js')).status,404)});
+
+test('built-in player themes stream through multiplayer server, including phone byte ranges',async()=>{
+  const tracks=['Cadoops Quiz Ace Ventura Alrighty Then Scream.mp3','Cadoops Quiz Final Fantasy Fanfare.mp3','Cadoops Quiz SpongeBob - Sweet Victory.mp3'];
+  for(const file of tracks){
+    const url=base+'/'+encodeURI(file);
+    const full=await fetch(url);
+    assert.equal(full.status,200,file+' full audio');
+    assert.match(full.headers.get('content-type')||'',/audio\/mpeg/);
+    await full.arrayBuffer();
+    const part=await fetch(url,{headers:{Range:'bytes=0-15'}});
+    assert.equal(part.status,206,file+' partial audio');
+    assert.match(part.headers.get('content-range')||'',/^bytes 0-15\/\d+$/);
+    assert.equal((await part.arrayBuffer()).byteLength,16);
+  }
+});
