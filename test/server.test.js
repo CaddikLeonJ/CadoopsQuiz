@@ -8,7 +8,7 @@ test('server can serve bank scripts referenced by its own homepage',async()=>{as
 test('health and static homepage are served; source server file is private',async()=>{let health=await req('/api/health');assert.equal(health.body.ok,true);assert.equal((await fetch(base+'/')).status,200);assert.equal((await fetch(base+'/server.js')).status,404)});
 
 test('built-in player themes stream through multiplayer server, including phone byte ranges',async()=>{
-  const tracks=['Cadoops Quiz Ace Ventura Alrighty Then Scream.mp3','Cadoops Quiz Final Fantasy Fanfare.mp3','Cadoops Quiz SpongeBob - Sweet Victory.mp3'];
+  const tracks=['Cadoops Quiz Ace Ventura Alrighty Then Scream.mp3','Cadoops Quiz Final Fantasy Fanfare.mp3','Cadoops Quiz SpongeBob - Sweet Victory.mp3','Cadoops Quiz The Ting Tong Song.mp3'];
   for(const file of tracks){
     const url=base+'/'+encodeURI(file);
     const full=await fetch(url);
@@ -20,4 +20,16 @@ test('built-in player themes stream through multiplayer server, including phone 
     assert.match(part.headers.get('content-range')||'',/^bytes 0-15\/\d+$/);
     assert.equal((await part.arrayBuffer()).byteLength,16);
   }
+});
+
+test('the new Ting Tong theme can be claimed as a unique multiplayer theme',async()=>{
+  const first=await req('/api/theme-claims',{owner:'tingtong-test-1',name:'First Player',themeId:'real:tingtong'});
+  assert.equal(first.status,200);
+  const duplicate=await req('/api/theme-claims',{owner:'tingtong-test-2',name:'Second Player',themeId:'real:tingtong'});
+  assert.equal(duplicate.status,400);
+  assert.match(duplicate.body.error,/already claimed/i);
+  const release=await req('/api/theme-claims',{owner:'tingtong-test-1',name:'First Player',themeId:''});
+  assert.equal(release.status,200);
+  const second=await req('/api/theme-claims',{owner:'tingtong-test-2',name:'Second Player',themeId:'real:tingtong'});
+  assert.equal(second.status,200);
 });
