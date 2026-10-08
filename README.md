@@ -9,7 +9,7 @@ The GitHub Pages version works as a solo demo immediately. Live rooms need the N
 ## Features
 
 - 22 categories: General Knowledge, Lord of the Rings, Game of Thrones, Disney, Video Games, Science, Harry Potter, Manchester United, Marvel, DC, Pokémon, Marine Biology, Cats, Animals, Films, TV Shows, Stranger Things, Big Bang Theory, Friends, House of the Dragon, The Walking Dead and Star Wars.
-- 22,465 unique standard multiple-choice questions after the v105 quality audit, plus dedicated numeric, quote, clue, picture and music-round material.
+- 22,457 unique standard multiple-choice questions after the v110 pre-play sweep, plus dedicated numeric, quote, picture and music-round material.
 - 20 round types: Classic Quiz, Buzzer Round, Name That Tune, Steal Round, Toxic Round, Quiz Bingo, Picture This, Higher or Lower, Confidence Bet, Who Said It?, Clue Me In, Who Am I?, Connections, Head-to-Head, Elimination, Category Roulette, The Chasedown, Closest Wins, Final Showdown and Cadoops Chaos.
 - Random quizzes and custom round sequences; category selection, timers, player limits and automatic/manual pacing.
 - Player names, camera/photo uploads and 12 default avatars. Profiles and recent results saved on that browser.
@@ -56,16 +56,25 @@ Tests cover every mode, the 100-player limit, answer privacy, score limits, card
 
 | Round | Rules |
 |---|---|
-| Classic | Everyone answers. Correct players are ranked by server submission time; with N players the fastest correct answer gets N points, then N−1, downwards. |
-| Buzzer | Fastest tap gets the first attempt; a wrong answer reopens the buzzer for remaining players. |\n| Music | First buzzer locks for 12 seconds; title and artist each earn 100. Wrong title reopens buzzers for players who have not attempted. |
-| Evil | Correct answers use the speed ladder and steal 5 points from the selected rival. Wrong answers lose 5 points. |
-| Bingo | Nine clues, personal shuffled answer cards; correct square earns 100, each new line earns 300, full house earns 1,000. |
-| Picture | Image clears gradually; correct answer earns 100. |
-| Higher/Lower | Compare a factual number to Lex’s suggestion; correct answer earns 100. |
-| Confidence Bet | Stake 0–500, limited to current score. Right: 100 + stake; wrong: lose stake. |
-| Who Said It? | Identify a short quote’s character or source; 100 per correct answer. |
-| Closest Wins | Closest guess earns 50 points; an exact answer earns 100. Tied closest guesses share the award. |
-| Final | Eight seconds and 200 points per correct answer. |
-| Chaos | Correct answers earn 100. One secret power per quiz: double the correct reward, shield from steals, or steal 5 on a correct answer. |
+| Classic Quiz | Everyone answers. Correct players score on the speed ladder: fastest gets the full active-player count, then one point less per place. |
+| Buzzer Round | Fastest finger gets the only attempt. Buzz first, then answer within 5 seconds. |
+| Name That Tune | Buzz first. Correct title earns 100 and correct artist earns another 100; a wrong title reopens the music buzzer. |
+| Steal Round | Normal speed scoring. The fastest correct player then chooses a rival and steals up to 5 points after the reveal. |
+| Toxic Round | Correct answers use normal speed scoring; each wrong answer loses 5 points. |
+| Quiz Bingo | Nine clues fill a 3×3 card. Correct answers use speed scoring; each new line adds 300 and a full house adds 1,000. |
+| Picture This | Identify the image as it becomes clearer; normal speed scoring applies. |
+| Higher or Lower | Decide whether the real number is higher or lower than Lex’s suggestion; normal speed scoring applies. |
+| Confidence Bet | Stake up to 500 points, limited by your current score. Correct: 100 + stake. Wrong: lose the stake. |
+| Who Said It? | Pick the speaker from four choices; normal speed scoring applies. |
+| Clue Me In | Pick the answer to Lex’s clue from four choices; normal speed scoring applies. |
+| Who Am I? | Identify the mystery answer from four choices; normal speed scoring applies. |
+| Connections | Find the answer connected to the clue; normal speed scoring applies. |
+| Head-to-Head | Two players are selected for each question. Only they answer; first correct scores 2 and second correct scores 1. |
+| Elimination | Active players answer; the worst performer on each question is knocked out for the rest of that round. |
+| Category Roulette | Each question is drawn from a random one of the selected categories. |
+| The Chasedown | The current leader is the target. Correct non-leaders earn a +2 chase bonus on top of speed points. |
+| Closest Wins | Closest numeric answer earns 50; an exact answer earns 100. Ties share the award. |
+| Final Showdown | Eight-second questions with double speed-ladder points. |
+| Cadoops Chaos | Twenty-second questions with one secret power card: Double, Shield or Steal. Each card can be used once. |
 
 Photos are cropped and compressed in the browser. Room members can see profile photos. Host tokens and player tokens are stored in their browser and must not be shared. The public repository contains the starter question bank, so this is intended for friendly quiz nights, not proctored competitions.
