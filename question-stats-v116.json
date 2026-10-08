@@ -1,0 +1,30 @@
+{
+  "version": "v116",
+  "generated_at": "2026-10-08",
+  "total_unique_standard_questions": 22457,
+  "categories": {
+    "General Knowledge": 1006,
+    "Lord of the Rings": 1669,
+    "Game of Thrones": 1063,
+    "Disney": 1020,
+    "Video Games": 507,
+    "Science": 524,
+    "Harry Potter": 1179,
+    "Manchester United": 1530,
+    "Marvel": 1538,
+    "DC": 1329,
+    "Pokémon": 539,
+    "Marine Biology": 687,
+    "Cats": 521,
+    "Animals": 509,
+    "Films": 551,
+    "TV Shows": 556,
+    "Stranger Things": 1371,
+    "Big Bang Theory": 842,
+    "Friends": 501,
+    "House of the Dragon": 3199,
+    "The Walking Dead": 831,
+    "Star Wars": 985
+  },
+  "audit": "v116 stability sweep: player intro-compatible HTTP test and live multiplayer serving of the three built-in MP3 themes with byte-range streaming; dedicated streaming regression test. v115 question repetition and music scoring fixes retained. Question totals unchanged."
+}
