@@ -13,7 +13,7 @@ function plan(config){
 const cats=Array.isArray(config.categories)?config.categories.filter(c=>D.categories.includes(c)):D.categories;assert(cats.length,'Select at least one category.');
 const songs=media(config.songs||[],'music'),pics=media(config.pictures||[],'picture');
 let rounds=config.rounds;
-const sourceFamily=m=>['higher','closest'].includes(m)?'numeric':m==='quote'?'quote':['clue','whoami','connections'].includes(m)?'clue':['picture','music'].includes(m)?m:'trivia';
+const sourceFamily=m=>['higher','closest'].includes(m)?'numeric':m==='quote'?'quote':['picture','music'].includes(m)?m:'trivia';
 if(config.play==='random'){
 let wanted=clamp(config.roundCount,1,12,5),count=clamp(config.perRound,1,10,3);
 let remaining={trivia:D.questions.filter(q=>cats.includes(q.category)).length,numeric:D.numeric.filter(q=>cats.includes(q.category)).length,quote:D.quotes.filter(q=>cats.includes(q.category)&&!q.generatedClue).length,clue:D.quotes.filter(q=>cats.includes(q.category)&&q.generatedClue).length,picture:[...D.pictures,...pics].filter(q=>cats.includes(q.category)).length,music:songs.filter(q=>cats.includes(q.category)).length};
@@ -28,7 +28,7 @@ const used=new Set();let output=[];
 rounds.forEach((r,ri)=>{assert(modes[r.mode],'Unknown round type.');let selected=r.category&&r.category!=='Mixed'?[r.category]:cats;assert(selected.every(c=>cats.includes(c)),'Round category must be selected in the quiz categories.');let pool;
 if(['higher','closest'].includes(r.mode))pool=D.numeric;
 else if(r.mode==='quote')pool=D.quotes.filter(q=>!q.generatedClue);
-else if(['clue','whoami','connections'].includes(r.mode))pool=D.quotes.filter(q=>q.generatedClue);
+else if(['clue','whoami','connections'].includes(r.mode))pool=D.questions;
 else if(r.mode==='picture')pool=[...D.pictures,...pics];
 else if(r.mode==='music')pool=songs;
 else pool=D.questions;
