@@ -1,0 +1,30 @@
+{
+  "version": "v113",
+  "generated_at": "2026-10-08",
+  "total_unique_standard_questions": 22457,
+  "categories": {
+    "General Knowledge": 1006,
+    "Lord of the Rings": 1669,
+    "Game of Thrones": 1063,
+    "Disney": 1020,
+    "Video Games": 507,
+    "Science": 524,
+    "Harry Potter": 1179,
+    "Manchester United": 1530,
+    "Marvel": 1538,
+    "DC": 1329,
+    "Pokémon": 539,
+    "Marine Biology": 687,
+    "Cats": 521,
+    "Animals": 509,
+    "Films": 551,
+    "TV Shows": 556,
+    "Stranger Things": 1371,
+    "Big Bang Theory": 842,
+    "Friends": 501,
+    "House of the Dragon": 3199,
+    "The Walking Dead": 831,
+    "Star Wars": 985
+  },
+  "audit": "v113 pre-play sweep: all 20 modes smoke-tested, random planner stress-tested, full bank references verified, current keypad/timing tests aligned, and Chaos now gives a 5-second post-answer card window."
+}
