@@ -552,13 +552,15 @@ body.quiz-active .buzzer-event .event-portrait .avatar.big{
   -webkit-text-stroke:1px rgba(5,8,16,.84)!important;
   text-shadow:0 2px 11px rgba(0,0,0,.9),0 0 20px rgba(0,0,0,.60)!important;
 }
-.intro-preview .event-name--medium,.player-intro .event-name--medium,
+.intro-preview .event-name--medium{font-size:clamp(16px,3.5vw,21px)!important}
+.intro-preview .event-name--long{font-size:clamp(14px,3vw,18px)!important}
+.player-intro .event-name--medium{font-size:clamp(18px,4.5vw,28px)!important}
+.player-intro .event-name--long{font-size:clamp(16px,3.8vw,23px)!important}
 .fastest-event .event-name--medium,body.quiz-active .buzzer-event .event-name--medium{
-  font-size:calc(var(--event-name-size)*.83)!important;
+  font-size:clamp(17px,4.2vw,24px)!important;
 }
-.intro-preview .event-name--long,.player-intro .event-name--long,
 .fastest-event .event-name--long,body.quiz-active .buzzer-event .event-name--long{
-  font-size:calc(var(--event-name-size)*.69)!important;
+  font-size:clamp(15px,3.5vw,21px)!important;
 }
 .player-intro{padding:clamp(16px,4vw,32px)!important;gap:clamp(7px,1.4dvh,14px)!important}
 .player-intro>.event-portrait,.intro-preview-content>.event-portrait{
