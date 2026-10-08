@@ -9,7 +9,7 @@ The GitHub Pages version works as a solo demo immediately. Live rooms need the N
 ## Features
 
 - 22 categories: General Knowledge, Lord of the Rings, Game of Thrones, Disney, Video Games, Science, Harry Potter, Manchester United, Marvel, DC, Pokémon, Marine Biology, Cats, Animals, Films, TV Shows, Stranger Things, Big Bang Theory, Friends, House of the Dragon, The Walking Dead and Star Wars.
-- 22,457 unique standard multiple-choice questions after the v113 pre-play sweep, plus dedicated numeric, quote, picture and music-round material.
+- 22,457 unique standard multiple-choice questions verified in v115, plus dedicated numeric, quote, picture and music-round material.
 - 20 round types: Classic Quiz, Buzzer Round, Name That Tune, Steal Round, Toxic Round, Quiz Bingo, Picture This, Higher or Lower, Confidence Bet, Who Said It?, Clue Me In, Who Am I?, Connections, Head-to-Head, Elimination, Category Roulette, The Chasedown, Closest Wins, Final Showdown and Cadoops Chaos.
 - Random quizzes and custom round sequences; category selection, timers, player limits and automatic/manual pacing.
 - Player names, camera/photo uploads and 12 default avatars. Profiles and recent results saved on that browser.
@@ -17,6 +17,7 @@ The GitHub Pages version works as a solo demo immediately. Live rooms need the N
 - Lex host character, scripted commentary and optional device speech voice. This is a game character with authored dialogue, not a live ChatGPT connection.
 - Host may play too. TV screen never needs a host token. Invite URLs contain only the room code and server address.
 - Solo demo with simulated opponents and local resume. It uses the same scoring engine as the multiplayer server.
+- v115 stability fixes: quiz planning no longer substitutes duplicate questions across rounds, and Name That Tune requires a correct song title before awarding the optional artist bonus. Automated GitHub Actions tests run on every push.
 
 ## Deploy multiplayer on Render
 
