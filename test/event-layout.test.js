@@ -32,3 +32,9 @@ test('small layouts and lengthy real/bot names have explicit mobile fitting styl
   assert.match(css,/overflow-wrap:anywhere!important/);
   assert.match(css,/@media\(max-height:600px\)/);
 });
+
+test('Ting Tong theme is in the picker, bot pool and real audio mapping',()=>{
+  assert.match(app,/tingtong:'Cadoops Quiz The Ting Tong Song\.mp3'/);
+  assert.match(app,/\['real:tingtong','The Ting Tong Song'\]/);
+  assert.match(app,/pool=\[\.\.\.realThemeOptions\.map/);
+});
