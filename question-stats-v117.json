@@ -1,0 +1,30 @@
+{
+  "version": "v117",
+  "generated_at": "2026-10-08",
+  "total_unique_standard_questions": 22457,
+  "categories": {
+    "General Knowledge": 1006,
+    "Lord of the Rings": 1669,
+    "Game of Thrones": 1063,
+    "Disney": 1020,
+    "Video Games": 507,
+    "Science": 524,
+    "Harry Potter": 1179,
+    "Manchester United": 1530,
+    "Marvel": 1538,
+    "DC": 1329,
+    "Pokémon": 539,
+    "Marine Biology": 687,
+    "Cats": 521,
+    "Animals": 509,
+    "Films": 551,
+    "TV Shows": 556,
+    "Stranger Things": 1371,
+    "Big Bang Theory": 842,
+    "Friends": 501,
+    "House of the Dragon": 3199,
+    "The Walking Dead": 831,
+    "Star Wars": 985
+  },
+  "audit": "v117 event presentation update: same centered square framed portrait across all 50 player-intro effects, effect preview, fastest-correct and buzzer displays; responsive smaller name typography including long names and bots, reduced-height phone layouts. No question bank changes."
+}
