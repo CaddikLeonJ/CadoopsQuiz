@@ -38,3 +38,14 @@ test('Ting Tong theme is in the picker, bot pool and real audio mapping',()=>{
   assert.match(app,/\['real:tingtong','The Ting Tong Song'\]/);
   assert.match(app,/pool=\[\.\.\.realThemeOptions\.map/);
 });
+
+test('alphabetical music theme picker ignores a leading The, but keeps the displayed song name',()=>{
+  const matched=app.match(/function themeSortTitle\(title\)\{[^}]+\}/);
+  assert.ok(matched,'Missing song title sort helper');
+  const key=vm.runInNewContext('('+matched[0]+')');
+  const titles=['The Zebra Song','Blue Sky','The Apple Tune','The Ting Tong Song','Ace Ventura'];
+  titles.sort((a,b)=>key(a).localeCompare(key(b),'en',{sensitivity:'base',numeric:true}));
+  assert.deepEqual(titles,['Ace Ventura','The Apple Tune','Blue Sky','The Ting Tong Song','The Zebra Song']);
+  assert.equal(key('The Ting Tong Song'),'Ting Tong Song');
+  assert.match(app,/realThemeOptions=\[[^\n]+\.sort\(\(a,b\)=>themeSortTitle/);
+});
