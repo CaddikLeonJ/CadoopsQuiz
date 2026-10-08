@@ -13,13 +13,13 @@ function plan(config){
 const cats=Array.isArray(config.categories)?config.categories.filter(c=>D.categories.includes(c)):D.categories;assert(cats.length,'Select at least one category.');
 const songs=media(config.songs||[],'music'),pics=media(config.pictures||[],'picture');
 let rounds=config.rounds;
+const sourceFamily=m=>['higher','closest'].includes(m)?'numeric':m==='quote'?'quote':['clue','whoami','connections'].includes(m)?'clue':['picture','music'].includes(m)?m:'trivia';
 if(config.play==='random'){
 let wanted=clamp(config.roundCount,1,12,5),count=clamp(config.perRound,1,10,3);
 let remaining={trivia:D.questions.filter(q=>cats.includes(q.category)).length,numeric:D.numeric.filter(q=>cats.includes(q.category)).length,quote:D.quotes.filter(q=>cats.includes(q.category)&&!q.generatedClue).length,clue:D.quotes.filter(q=>cats.includes(q.category)&&q.generatedClue).length,picture:[...D.pictures,...pics].filter(q=>cats.includes(q.category)).length,music:songs.filter(q=>cats.includes(q.category)).length};
-let family=m=>['higher','closest'].includes(m)?'numeric':['quote','clue','picture','music'].includes(m)?m:'trivia';
 let starter=['classic','picture','quote','clue','whoami','connections','roulette'],middle=['classic','picture','quote','clue','whoami','connections','headtohead','elimination','roulette','buzzer','music','steal','toxic','bingo','higher','bet','chasedown'],endgame=['closest','chaos','buzzer','bet'],usedModes=new Set();
 function poolFor(pos){if(wanted===1)return ['final','closest','chaos','classic'];if(pos===wanted-1)return ['final',...endgame];let starterSlots=Math.max(1,Math.floor(wanted*.2)),endSlots=Math.max(1,Math.floor(wanted*.2));if(pos<starterSlots)return starter;if(pos>=wanted-endSlots)return endgame;return middle}
-function choose(pos,picked,left){if(pos===wanted)return picked;for(let mode of shuffle(poolFor(pos).filter(m=>modes[m]&&!usedModes.has(m)))){let n=mode==='bingo'?8:count,f=family(mode);if(left[f]<n)continue;if(mode==='bingo'&&new Set(D.questions.filter(q=>cats.includes(q.category)).map(q=>norm(q.answer))).size<9)continue;usedModes.add(mode);let found=choose(pos+1,[...picked,{mode,count:n,category:'Mixed'}],{...left,[f]:left[f]-n});if(found)return found;usedModes.delete(mode)}return null}
+function choose(pos,picked,left){if(pos===wanted)return picked;for(let mode of shuffle(poolFor(pos).filter(m=>modes[m]&&!usedModes.has(m)))){let n=mode==='bingo'?8:count,f=sourceFamily(mode);if(left[f]<n)continue;if(mode==='bingo'&&new Set(D.questions.filter(q=>cats.includes(q.category)).map(q=>norm(q.answer))).size<9)continue;usedModes.add(mode);let found=choose(pos+1,[...picked,{mode,count:n,category:'Mixed'}],{...left,[f]:left[f]-n});if(found)return found;usedModes.delete(mode)}return null}
 rounds=choose(0,[],remaining);
 assert(rounds,`There aren’t enough unused questions for ${wanted} rounds with these categories and question counts. Choose fewer rounds/questions, more categories, or add media.`);
 } 
@@ -32,14 +32,14 @@ else if(['clue','whoami','connections'].includes(r.mode))pool=D.quotes.filter(q=
 else if(r.mode==='picture')pool=[...D.pictures,...pics];
 else if(r.mode==='music')pool=songs;
 else pool=D.questions;
-pool=shuffle(pool.filter(q=>selected.includes(q.category)&&!used.has(`${r.mode==='higher'||r.mode==='closest'?'numeric':['quote','clue'].includes(r.mode)?r.mode:r.mode==='picture'?'picture':r.mode==='music'?'music':'trivia'}:${q.id}`)));
+pool=shuffle(pool.filter(q=>selected.includes(q.category)&&!used.has(`${sourceFamily(r.mode)}:${q.id}`)));
 if(r.mode==='bingo')pool=pool.filter((q,i,arr)=>arr.findIndex(x=>norm(x.answer)===norm(q.answer))===i);
 const count=r.mode==='bingo'?8:clamp(r.count,1,20,3);
 const needed=r.mode==='bingo'?9:count;
 assert(pool.length>=needed,`${modes[r.mode].name}: only ${pool.length} unused questions/clips in the selected categories; choose fewer questions, different categories, or add media.`);
 let chosen=pool.slice(0,count);let card=(r.mode==='bingo'?pool.slice(0,9):chosen).map(q=>q.answer);
 chosen.forEach((source,qi)=>{let q={...source,round:ri+1,roundTotal:rounds.length,position:qi+1,roundSize:count,mode:r.mode,roundName:modes[r.mode].name};delete q.svg;if(!['classic','picture','quote','clue','whoami','connections','music','higher','closest','bingo'].includes(r.mode)&&q.options){let letters=q.options.map(x=>String(x).trim().charAt(0).toUpperCase());if(new Set(letters).size!==letters.length){let alt=shuffle(D.questions.filter(x=>selected.includes(x.category)&&x.id!==q.id&&x.options&&new Set(x.options.map(v=>String(v).trim().charAt(0).toUpperCase())).size===x.options.length))[0];if(alt)q={...q,...alt,round:ri+1,roundTotal:rounds.length,position:qi+1,roundSize:count,mode:r.mode,roundName:modes[r.mode].name}}}
-used.add(`${['higher','closest'].includes(r.mode)?'numeric':['quote','clue'].includes(r.mode)?r.mode:r.mode==='picture'?'picture':r.mode==='music'?'music':'trivia'}:${q.id}`);
+used.add(`${sourceFamily(r.mode)}:${q.id}`);
 if(['clue','whoami','connections'].includes(r.mode)){q.options=shuffle(q.options)}
 else if(r.mode==='quote'){let mediaPeople=['Gandalf','Gollum','Buzz Lightyear','Dory','Mario','Hagrid','Tony Stark','Groot','The Joker','Joey Tribbiani','Del Boy','Darth Vader','Yoda','Obi-Wan Kenobi','Harry Potter','Hermione Granger','Ron Weasley','Jon Snow','Tyrion Lannister','Daenerys Targaryen','Ned Stark','Arya Stark','Batman','Superman','Wonder Woman','Spider-Man','Captain America','Thor','Loki','Mickey Mouse','Elsa','Woody','Shrek','Homer Simpson','Walter White','Michael Scott','Wednesday Addams','Indiana Jones','Jack Sparrow'];let people=shuffle([...D.quotes.map(a=>a.answer),...mediaPeople].filter(a=>norm(a)!==norm(q.answer)&&!/^house\s/i.test(a)&&!['star wars','the terminator','portal','pokémon'].includes(String(a).toLowerCase()))).filter((a,i,arr)=>arr.findIndex(x=>norm(x)===norm(a))===i).slice(0,3);q.options=shuffle([q.answer,...people]);q.prompt=q.prompt.replace(/^Who or what is associated with\s*/i,'Who said ').replace(/\?$/,'?')}
 else if(r.mode==='higher'){q.reference=Math.max(1,Math.round(q.value*(Math.random()<.5?.8:1.2)));if(q.reference===q.value)q.reference++;q.prompt=`${q.prompt} Higher or lower than ${q.reference}?`;q.answer=q.value>q.reference?'Higher':'Lower';q.options=['Higher','Lower']}
