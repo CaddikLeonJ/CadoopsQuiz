@@ -42,7 +42,7 @@ Object.entries({"General Knowledge":[["What is the capital of Canada?","Ottawa",
 Object.entries({
 'General Knowledge':[
 ['Which country has Ottawa as its capital?','Canada','Australia','New Zealand','United States'],
-['Who painted "The Birth of Venus"?','Sandro Botticelli','Titian','Raphael','Caravaggio'],
+['Who composed "Boléro"?','Maurice Ravel','Claude Debussy','Erik Satie','Camille Saint-Saëns'],
 ['Which element has the chemical symbol Fe?','Iron','Fluorine','Francium','Fermium'],
 ['Which continent contains the Sahara Desert?','Africa','Asia','South America','Australia']
 ],
