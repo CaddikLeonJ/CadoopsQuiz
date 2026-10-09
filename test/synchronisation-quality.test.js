@@ -76,3 +76,8 @@ test('all normal quiz questions are short-answer compatible, with original Alice
   const counts=D.categories.map(category=>[category,D.questions.filter(q=>q.category===category).length]);
   console.log('Quality-screened category totals: '+JSON.stringify(counts));
 });
+
+test('orphaned canvas effects stop on every stage re-render and browser detachment',()=>{
+  assert.match(app,/function frame\(t\)\{if\(!c\.isConnected\)\{c\._stop\?\.\(\);return\}/);
+  assert.match(app,/app\.querySelectorAll\('canvas\.intro-fx-canvas'\)\.forEach\(c=>c\._stop\?\.\(\)\)/);
+});
