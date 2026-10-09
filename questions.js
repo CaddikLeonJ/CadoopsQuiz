@@ -405,9 +405,13 @@ const shortAnswerTrivia=row=>{
   const words=text=>text.split(/\s+/).filter(Boolean).length;
   const answerWords=words(options[0]);
   const legitimateLongTitleOrScore=/\b(?:title of|episode titled|full-time score|scoreline|first appear|first appearing)\b/i.test(prompt);
-  if(/^Why\b/i.test(prompt)&&answerWords>4)return false;
-  if(/^How (?!many\b|much\b|old\b|long\b|far\b|often\b|tall\b|deep\b|high\b|wide\b|fast\b)/i.test(prompt)&&answerWords>5)return false;
+  if(/^Why\b/i.test(prompt)&&answerWords>3)return false;
+  if(/^How (?!many\b|much\b|old\b|long\b|far\b|often\b|tall\b|deep\b|high\b|wide\b|fast\b)/i.test(prompt)&&answerWords>3)return false;
   if(!legitimateLongTitleOrScore&&answerWords>6)return false;
+  // Strip narrative sentence answers even when they happen to use only 4-6 words.
+  // Keep genuine media titles, comic issue references and recorded scorelines.
+  const soundsLikeSentence=text=>words(text)>=4&&/^(?:he|she|they|it|his|her|their|there|this|that|because|to|by|a|an|the)\b/i.test(text)&&/\b(?:is|are|was|were|has|have|had|did|does|do|can|could|would|should|will|must|believes|fears|refuses|needs|wants|tries|chooses|says|tells|orders|kills|sends|finds|knows|takes|gives|leaves|becomes)\b/i.test(text);
+  if(!legitimateLongTitleOrScore&&options.some(soundsLikeSentence))return false;
   if(!legitimateLongTitleOrScore&&options.some(text=>words(text)>9))return false;
   return true;
 };
