@@ -9,7 +9,7 @@ The GitHub Pages version works as a solo demo immediately. Live rooms need the N
 ## Features
 
 - 22 categories: General Knowledge, Lord of the Rings, Game of Thrones, Disney, Video Games, Science, Harry Potter, Manchester United, Marvel, DC, Pokémon, Marine Biology, Cats, Animals, Films, TV Shows, Stranger Things, Big Bang Theory, Friends, House of the Dragon, The Walking Dead and Star Wars.
-- 22,457 unique standard multiple-choice questions in the v118 bank, plus dedicated numeric, quote, picture and music-round material.
+- More than 22,000 usable standard multiple-choice questions, with a v120 quality screen excluding overlong explanation answers; plus dedicated numeric, quote, picture and music-round material.
 - 20 round types: Classic Quiz, Buzzer Round, Name That Tune, Steal Round, Toxic Round, Quiz Bingo, Picture This, Higher or Lower, Confidence Bet, Who Said It?, Clue Me In, Who Am I?, Connections, Head-to-Head, Elimination, Category Roulette, The Chasedown, Closest Wins, Final Showdown and Cadoops Chaos.
 - Random quizzes and custom round sequences; category selection, timers, player limits and automatic/manual pacing.
 - Player names, camera/photo uploads and 12 default avatars. Profiles and recent results saved on that browser.
@@ -24,6 +24,8 @@ The GitHub Pages version works as a solo demo immediately. Live rooms need the N
 - v118 adds **The Ting Tong Song** as a built-in entrance / fastest-answer theme for real and solo-simulated players, including playback previews, multiplayer MP3 streaming and exclusive theme claims.
 
 - v119 alphabetical theme sorting: built-in song theme lists now ignore the leading word **“The”** for sorting while keeping the full displayed title (e.g. “The Ting Tong Song” sorts under T for “Ting”).
+
+- v120: static player profile portraits in all 50 entrance effects (background scenes still animate), server-timed fastest-answer celebrations with a shared correct-answer viewing window, guarded host skipping, and a bank-wide filter for sentence-length explanations. The Alicent coronation question is rewritten as a concise factual question, and two-player synchronization tests are included.
 
 ## Deploy multiplayer on Render
 
