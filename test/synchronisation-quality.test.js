@@ -69,7 +69,7 @@ test('all normal quiz questions are short-answer compatible, with original Alice
   const explain=/^Why\b/i;
   const wc=t=>String(t||'').trim().split(/\s+/).length;
   for(const q of D.questions){
-    if(explain.test(q.prompt))assert.ok(wc(q.answer)<=4,q.prompt+' '+q.answer);
+    if(explain.test(q.prompt))assert.ok(wc(q.answer)<=3,q.prompt+' '+q.answer);
     const namedLong=/\b(?:title of|episode titled|full-time score|scoreline|first appear|first appearing)\b/i.test(q.prompt);
     if(!namedLong)assert.ok(wc(q.answer)<=6,q.prompt+' '+q.answer);
   }
@@ -80,4 +80,22 @@ test('all normal quiz questions are short-answer compatible, with original Alice
 test('orphaned canvas effects stop on every stage re-render and browser detachment',()=>{
   assert.match(app,/function frame\(t\)\{if\(!c\.isConnected\)\{c\._stop\?\.\(\);return\}/);
   assert.match(app,/app\.querySelectorAll\('canvas\.intro-fx-canvas'\)\.forEach\(c=>c\._stop\?\.\(\)\)/);
+});
+
+test('no fastest winner still gives both players at least three seconds to see the answer',()=>{
+  const g=new Game({auto:false,categories:['General Knowledge'],rounds:[{mode:'classic',count:2}]},'SYNC2',1000);
+  const a=g.join({name:'A'},1000),b=g.join({name:'B'},1000);
+  let now=enterQuestion(g,1000),wrong=answerKey(g.q().answer)==='Z'?'Y':'Z';
+  g.answer(a.token,{value:wrong},++now);
+  g.answer(b.token,{value:wrong},++now);
+  assert.equal(g.phase,'reveal');
+  assert.equal(g.firstCorrect,null);
+  assert.equal(g.celebrationUntil,0);
+  assert.equal(g.answerVisibleAt,now);
+  assert.equal(g.deadline,now+7000);
+  const aView=g.state(a.token,now),bView=g.state(b.token,now);
+  assert.equal(aView.answerVisibleAt,bView.answerVisibleAt);
+  assert.throws(()=>g.host(g.hostToken,{action:'next'},now+100),/time to see the correct answer/);
+  g.host(g.hostToken,{action:'next'},now+3000);
+  assert.equal(g.phase,'reading');
 });
