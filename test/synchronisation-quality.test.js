@@ -23,7 +23,7 @@ test('all clients receive the same server-timed fastest-correct FX and answer re
   const a=g.join({name:'A'},1000),b=g.join({name:'B'},1000);
   let now=enterQuestion(g,1000);
   g.answer(a.token,{value:answerKey(g.q().answer)},++now);
-  g.answer(b.token,{value:'~'},++now);
+  g.answer(b.token,{value:answerKey(g.q().answer)==='Z'?'Y':'Z'},++now);
   assert.equal(g.phase,'reveal');
   assert.equal(g.celebrationUntil,now+5000);
   assert.equal(g.deadline,now+12000);
