@@ -601,3 +601,16 @@ body.quiz-active .buzzer-event>span{font-size:clamp(11px,2.5vw,15px)!important;l
 @media(prefers-reduced-motion:reduce){
   .player-intro .event-name,.intro-preview .event-name{animation:none!important}
 }
+
+/* v120: keep the profile portrait absolutely still. All 50 intro scene backgrounds
+   retain their own animations; only the avatar/photo no longer zooms or pulses. */
+.player-intro .event-portrait,
+.player-intro .event-portrait .avatar,
+.player-intro .event-portrait img,
+.intro-preview .event-portrait,
+.intro-preview .event-portrait .avatar,
+.intro-preview .event-portrait img{
+  animation:none!important;
+  transition:none!important;
+  transform:none!important;
+}
