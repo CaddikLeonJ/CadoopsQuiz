@@ -397,6 +397,21 @@ raw['Friends'].push(...[
 ["What do the six friends leave on Monica's counter in the final scene?","Their keys","Coffee mugs","Photo frames","Wedding rings"]
 ]);
 const rejectStandardPrompt=p=>/^How many distinct main-character plotline groupings are recorded for Friends\b/i.test(String(p||''));
+
+// Standard-round answer pads accept a single first letter/digit. Reject prompts
+// asking for explanatory sentences; retain genuine full titles and match scores.
+const shortAnswerTrivia=row=>{
+  const prompt=String(row[0]||''),options=row.slice(1).map(x=>String(x||'').trim());
+  const words=text=>text.split(/\s+/).filter(Boolean).length;
+  const answerWords=words(options[0]);
+  const legitimateLongTitleOrScore=/\b(?:title of|episode titled|full-time score|scoreline|first appear|first appearing)\b/i.test(prompt);
+  if(/^Why\b/i.test(prompt)&&answerWords>4)return false;
+  if(/^How (?!many\b|much\b|old\b|long\b|far\b|often\b|tall\b|deep\b|high\b|wide\b|fast\b)/i.test(prompt)&&answerWords>5)return false;
+  if(!legitimateLongTitleOrScore&&answerWords>6)return false;
+  if(!legitimateLongTitleOrScore&&options.some(text=>words(text)>9))return false;
+  return true;
+};
+
 const cleanPrompt=p=>{p=String(p||'').trim();
   p=p.replace(/^Which of these main-character combinations shares (?:a recorded plotline|a storyline) in Friends /i,'Which of these character groups shares a storyline in Friends ');
   p=p.replace(/^According to The Cat API breed profile,\s*/i,'');
@@ -417,7 +432,7 @@ const cleanPrompt=p=>{p=String(p||'').trim();
 };
 const questions=categories.flatMap((category,c)=>{let seen=new Set();return raw[category]
   .filter(r=>Array.isArray(r)&&r.length===5&&r.every(v=>String(v).trim().length>0)&&new Set(r.slice(1).map(v=>String(v).trim().toLowerCase())).size===4)
-  .filter(r=>!rejectStandardPrompt(r[0]))
+  .filter(r=>!rejectStandardPrompt(r[0])&&shortAnswerTrivia(r))
   .map(r=>[cleanPrompt(r[0]),...r.slice(1)])
   .filter(r=>{let k=String(r[0]).trim().toLowerCase();if(seen.has(k))return false;seen.add(k);return true})
   .map((r,i)=>({id:'c'+c+'q'+i,category,prompt:r[0],answer:r[1],options:r.slice(1)}))});
